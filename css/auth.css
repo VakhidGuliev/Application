@@ -314,3 +314,19 @@ FOOTER
 .errorMessage{
 	color: red !important;
 }
+
+.successMessage{
+	color: green !important;
+}
+
+input:valid {
+	border-color: green;
+}
+
+input:invalid {
+	border-color: red;
+}
+.disabled{
+	background: #9d9e9e !important;
+	border: none !important;
+}

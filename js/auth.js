@@ -2,52 +2,85 @@
 
 var form = document.forms.namedItem("login-form");
 
-form.addEventListener("submit", authentication);
 
+var Form = {
+    name: form.querySelector(".username"),
+    password: form.querySelector(".password"),
 
-function authentication(event) {
+    activate: function () {
+        var btnSignIn = form.querySelector(".button[value=ВОЙТИ]");
 
-    event.preventDefault();
+        if (this.name.value === "" || this.password.value === "") {
+            btnSignIn.disabled = "true";
+            btnSignIn.classList.add("disabled");
 
-    var formData = {
-        name: form.elements.namedItem("username").value,
-        password: form.elements.namedItem("password").value
-    };
+        }
+        if (this.name.value !== "" && this.password.value !== "") {
+            btnSignIn.removeAttribute("disabled");
+            btnSignIn.classList.remove("disabled");
+        }
 
+    },
+    validate: function () {
+        if (!isNaN(parseInt(Form.name.value))){
+            Form.name.style.border = "1px solid red";
+        } else {
+            Form.name.style.border = "none";
+        }
+    }
+    ,
+    authentication: function (event) {
+        event.preventDefault();
 
-    window.loadJson(function (data) {
-        var openURL = "http://localhost:63342/Application/App.html";
-        var arr = [];
+        window.loadJson(function (data) {
+            var openURL = "http://localhost:63342/Application/App.html";
+            var arr = [];
 
-        for (var key in data) {
-            for (let i = 0; i < data[key].length; i++) {
-                arr[i] = data[key][i];
+            for (var key in data) {
+                for (let i = 0; i < data[key].length; i++) {
+                    arr[i] = data[key][i];
+                }
+
+                Form.validationBackend(arr, openURL)
+            }
+        });
+    },
+    validationBackend: function (arr, url) {
+
+        var message = document.querySelector(".header > span");
+
+        var isContainsName = false;
+        for (let i = 0; i < arr.length; i++) {
+            if (this.name.value === arr[i].name && this.password.value === arr[i].password.toString()) {
+                setTimeout(function () {
+                    window.open(url, "_self")
+                }, 3000);
+                isContainsName = true;
+
+                message.textContent = "Выполняется вход...";
+                message.classList.add("successMessage");
+                break;
             }
 
-            validation(formData, arr, openURL)
         }
-    });
-}
-
-
-function validation(formData, arr, url) {
-    var isContainsName = false;
-    for (let i = 0; i < arr.length; i++) {
-        if (formData.name === arr[i].name && formData.password === arr[i].password.toString()) {
-            window.open(url, "_self");
-            isContainsName = true;
-            break;
+        if (!isContainsName) {
+            message.textContent = "Неверный логин или пароль!";
+            message.classList.add("errorMessage");
         }
 
+        return isContainsName;
     }
-    if (!isContainsName) {
-        var message = document.querySelector(".header > span");
-        message.textContent = "Неверный логин или пароль!";
-        message.classList.add("errorMessage");
+};
+
+Form.activate();
+
+form.addEventListener("keyup",Form.validate);
+form.addEventListener("keyup", Form.activate);
+form.addEventListener("submit", Form.authentication);
+
+
+document.addEventListener("keyup", function (event) {
+    if (event.keyCode === 8) {
+        Form.activate();
     }
-
-    return isContainsName;
-}
-
-
-
+});
