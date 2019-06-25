@@ -6,11 +6,9 @@ var form = document.forms.namedItem("login-form");
 var Form = {
     name: form.querySelector(".username"),
     password: form.querySelector(".password"),
-    valueToClass: {
-        "": "disabled",
-        isNan: "invalid",
 
-    },
+    isLoad: false,
+    formDat: "",
 
     validate: function () {
         var btnSignIn = form.querySelector(".button[value=ВОЙТИ]");
@@ -45,9 +43,21 @@ var Form = {
     authentication: function (event) {
         event.preventDefault();
 
+        if (Form.isLoad){
+            return;
+        }
+
         window.loadJson(function (data) {
+            Form.isLoad = true;
             var openURL = "http://localhost:63342/Application/App.html";
             var arr = [];
+
+            console.log(data);
+            console.log(arr);
+
+
+            Form.formDat = arr;
+
 
             for (var key in data) {
                 for (let i = 0; i < data[key].length; i++) {
@@ -97,3 +107,4 @@ document.addEventListener("keyup", function (event) {
         Form.validate();
     }
 });
+
