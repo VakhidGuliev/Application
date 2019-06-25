@@ -1,0 +1,23 @@
+.required{
+    border: 1px solid red;
+}
+
+.errorMessage{
+    color: red !important;
+}
+
+.successMessage{
+    color: green !important;
+}
+
+.valid {
+    border-color: green !important;
+}
+
+.invalid {
+    border-color: red !important;
+}
+.disabled{
+    background: #9d9e9e !important;
+    border: none !important;
+}

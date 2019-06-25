@@ -4,6 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Авторизация</title>
 	<link href="css/auth.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/validate.css">
 	<link rel="icon" href="http://vladmaxi.net/favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="http://vladmaxi.net/favicon.ico" type="image/x-icon">
 </head>
@@ -22,15 +23,15 @@
 
     <div class="content">
         <label for="username">
-            <input name="username" id="username" type="text" minlength="4"  class="input username"  placeholder="введите имя"/>
+            <input name="username" id="username" type="text" minlength="4" class="input username"  placeholder="введите имя"/>
         </label>
         <label for="password">
-            <input name="password" type="password" minlength="3" class="input password" placeholder="введите пароль"/>
+            <input name="password" id="password" type="password" minlength="3" class="input password" placeholder="введите пароль"/>
         </label>
     </div>
 
     <div class="footer">
-		<input type="submit" name="submit" value="ВОЙТИ" class="button" />
+		<input type="submit" name="submit" value="ВОЙТИ" class="button disabled" disabled />
 		<a href="registration.html" class="register">Регистрация</a>
     </div>
 

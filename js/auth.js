@@ -6,29 +6,42 @@ var form = document.forms.namedItem("login-form");
 var Form = {
     name: form.querySelector(".username"),
     password: form.querySelector(".password"),
-
-    activate: function () {
-        var btnSignIn = form.querySelector(".button[value=ВОЙТИ]");
-
-        if (this.name.value === "" || this.password.value === "") {
-            btnSignIn.disabled = "true";
-            btnSignIn.classList.add("disabled");
-
-        }
-        if (this.name.value !== "" && this.password.value !== "") {
-            btnSignIn.removeAttribute("disabled");
-            btnSignIn.classList.remove("disabled");
-        }
+    valueToClass: {
+        "": "disabled",
+        isNan: "invalid",
 
     },
+
     validate: function () {
-        if (!isNaN(parseInt(Form.name.value))){
-            Form.name.style.border = "1px solid red";
-        } else {
-            Form.name.style.border = "none";
+        var btnSignIn = form.querySelector(".button[value=ВОЙТИ]");
+
+
+        if (Form.name.value === "" || this.password.value === "") {
+            btnSignIn.disabled = "true";
+            btnSignIn.classList.add("disabled")
+
+        } else if (Form.name.classList.contains("invalid")) {
+            btnSignIn.disabled = "true";
+            btnSignIn.classList.add("disabled")
         }
-    }
-    ,
+
+
+        if (!Form.name.classList.contains("invalid")) {
+            if (Form.name.value !== "" && this.password.value !== "") {
+                btnSignIn.removeAttribute("disabled");
+                btnSignIn.classList.remove("disabled")
+            }
+        }
+
+
+        if (!isNaN(parseInt(Form.name.value)) && Form.name.value.length !== 0) {
+            Form.name.classList.add("invalid")
+        } else {
+            Form.name.classList.remove("invalid");
+        }
+
+
+    },
     authentication: function (event) {
         event.preventDefault();
 
@@ -41,7 +54,7 @@ var Form = {
                     arr[i] = data[key][i];
                 }
 
-                Form.validationBackend(arr, openURL)
+                Form.validationBackend(arr, openURL);
             }
         });
     },
@@ -51,7 +64,7 @@ var Form = {
 
         var isContainsName = false;
         for (let i = 0; i < arr.length; i++) {
-            if (this.name.value === arr[i].name && this.password.value === arr[i].password.toString()) {
+            if (Form.name.value === arr[i].name && this.password.value === arr[i].password.toString()) {
                 setTimeout(function () {
                     window.open(url, "_self")
                 }, 3000);
@@ -68,19 +81,19 @@ var Form = {
             message.classList.add("errorMessage");
         }
 
+
         return isContainsName;
     }
 };
 
-Form.activate();
 
-form.addEventListener("keyup",Form.validate);
-form.addEventListener("keyup", Form.activate);
+form.addEventListener("keyup", Form.validate);
+
 form.addEventListener("submit", Form.authentication);
 
 
 document.addEventListener("keyup", function (event) {
     if (event.keyCode === 8) {
-        Form.activate();
+        Form.validate();
     }
 });
