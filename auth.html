@@ -12,7 +12,7 @@
 <div id="wrapper">
     <div class="user-icon"></div>
     <div class="pass-icon"></div>
-	
+
 <form name="login-form" action="" class="login-form">
 
     <div class="header">
@@ -21,8 +21,12 @@
     </div>
 
     <div class="content">
-		<input name="username" type="text" class="input username"  placeholder="введите имя"/>
-		<input name="password" type="password" class="input password" placeholder="введите пароль"/>
+        <label for="username">
+            <input name="username" id="username" type="text" minlength="4"  class="input username"  placeholder="введите имя"/>
+        </label>
+        <label for="password">
+            <input name="password" type="password" minlength="3" class="input password" placeholder="введите пароль"/>
+        </label>
     </div>
 
     <div class="footer">
@@ -37,7 +41,5 @@
 
 <script src="js/backend.js"></script>
 <script src="js/auth.js"></script>
-
-
 </body>
 </html>
