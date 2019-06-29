@@ -628,3 +628,9 @@ input {
     padding: 50px 40px;
   }
 }
+
+
+.disabled{
+  background: #9d9e9e !important;
+  border: none !important;
+}
