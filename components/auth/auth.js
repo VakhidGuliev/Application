@@ -55,7 +55,7 @@ var FormAuth = {
     },
     authentication: function (event) {
         event.preventDefault();
-        var URL = "http://localhost:63342/Application/App.html";
+        var URL = "../app/app.html";
 
         const auth = firebase.auth();
         auth.signInWithEmailAndPassword(FormAuth.email.value, FormAuth.password.value).then(function () {
