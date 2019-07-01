@@ -74,7 +74,7 @@ var FormRegistration = {
             console.log(error);
         });
 
-        await add(date);
+        await add(date,"/users.json");
     }
 };
 

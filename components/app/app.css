@@ -1,0 +1,9 @@
+input{
+    width: 100%;
+}
+.user-menu{
+    text-align: left;
+    padding: 0 20px;
+    padding-top: 10px;
+    color: #fff;
+}

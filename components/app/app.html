@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>app</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="App.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-3" style="background: black">
+            <ul class="nav flex-column user-menu">
+                <li><a href="">Vugar Guliev</a></li>
+                <li>Все заметки</li>
+                <li>Избранное</li>
+                <li>Корзина</li>
+                <li>Настройки</li>
+                <li>Выход</li>
+            </ul>
+        </div>
+
+        <div class="col-9">
+            <h1>AddList</h1>
+            <form method="post" name="task">
+               <div class="form-group">
+                   <label for="name">Название</label>
+                   <input type="text" class="form-control" name="name" id="name">
+               </div>
+                <div class="form-group">
+                    <label for="description">Описание</label>
+                    <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-success" type="submit">Add</button>
+                </div>
+            </form>
+            <hr>
+            <ul class="list-group task-list">
+                <li class="list-group-item task-list-item"><span>1:</span></li>
+                <li class="list-group-item task-list-item"><span>2:</span></li>
+                <li class="list-group-item task-list-item"><span>3:</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<script src="app.js"></script>
+<script src="../../services/api.service.js"></script>
+
+</body>
+</html>
