@@ -1,5 +1,13 @@
-body{
+body {
     background: url("files/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.btn-start {
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    display: block;
+    position: absolute;
 }
