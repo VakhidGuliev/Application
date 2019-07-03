@@ -15,15 +15,15 @@
     <div class="row">
         <div class="col-3" style="background: black">
             <p><a href="">Vugar Guliev</a></p>
-            <ul class="list-group" id="list-tab" role="tablist">
-                <li><a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list"
-                       href="#list-home" role="tab" aria-controls="home">Home</a></li>
-                <li><a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
-                       href="#list-profile" role="tab" aria-controls="profile">Profile</a></li>
-                <li><a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list"
-                       href="#list-messages" role="tab" aria-controls="messages">Messages</a></li>
-                <li><a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
-                       href="#list-settings" role="tab" aria-controls="settings">Settings</a></li>
+            <ul class="list-group">
+                <li class="list-group-item dropdown nav-item ">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Заметки</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="#">Программирование</a></li>
+                        <li><a class="dropdown-item" href="#">Спорт</a></li>
+                        <li><a class="dropdown-item" href="#">Хобби</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
 
@@ -53,7 +53,9 @@
 </div>
 
 
+
 <script src="app.js"></script>
+<script src="../menu.js"></script>
 <script src="../../services/api.service.js"></script>
 <script src="../../services/transformService.js"></script>
 

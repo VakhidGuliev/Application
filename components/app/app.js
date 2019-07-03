@@ -39,20 +39,22 @@ var TaskForm = {
     getTasks: async function () {
         var dataTask = await get("/tasks.json");
 
-        var arr = fbTransformToArray(dataTask);
+        var promise = fbTransformToArray(dataTask);
 
         var taskList = document.querySelector(".task-list");
 
-        arr.then(function (item) {
-            for (var key in item){
-                const taskItem = item[key];
-                taskList.innerHTML = taskItem.description;
-            }
-        })
+        promise.then(function (arr) {
+
+            arr.forEach(function (item) {
+
+                var task = document.createElement("li");
+                task.innerText = item.name;
+                taskList.insertAdjacentElement("afterbegin", task);
+            })
+        }).catch(e => console.log(e.message));
 
     },
 };
 
 form.addEventListener("submit", TaskForm.createTask);
-
-showAll.addEventListener("click",TaskForm.getTasks);
+showAll.addEventListener("click", TaskForm.getTasks);
