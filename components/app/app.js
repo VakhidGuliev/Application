@@ -58,3 +58,4 @@ var TaskForm = {
 
 form.addEventListener("submit", TaskForm.createTask);
 showAll.addEventListener("click", TaskForm.getTasks);
+

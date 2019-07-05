@@ -13,38 +13,45 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-3" style="background: black">
-            <p><a href="">Vugar Guliev</a></p>
-            <ul class="list-group">
-                <li class="list-group-item dropdown nav-item ">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Заметки</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Программирование</a></li>
-                        <li><a class="dropdown-item" href="#">Спорт</a></li>
-                        <li><a class="dropdown-item" href="#">Хобби</a></li>
-                    </ul>
-                </li>
-            </ul>
+        <div class="col-3" style="background: black;height: 340px;">
+            <div class="menu">
+                <p><a href="">Vugar Guliev</a></p>
+                <div class="list-group" id="myList" role="tablist">
+                    <a class="list-group-item list-group-item-action active" data-toggle="list" href="#home" role="tab">Home</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#profile" role="tab">Profile</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#messages" role="tab">Messages</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings" role="tab">Settings</a>
+                </div>
+            </div>
         </div>
 
         <div class="col-9">
-            <div class="AddTask">
-                <h1>AddList</h1>
-                <form method="post" name="task">
-                    <div class="form-group">
-                        <label for="name">Название</label>
-                        <input type="text" class="form-control" name="name" id="name">
+            <div class="tab-content">
+                <div class="tab-pane active" id="home" role="tabpanel">
+                    <div class="AddTask">
+                        <h1>AddList</h1>
+                        <form method="post" name="task">
+                            <div class="form-group">
+                                <label for="name">Название</label>
+                                <input type="text" class="form-control" name="name" id="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Описание</label>
+                                <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                            </div>
+                            <div class="buttons">
+                                <button class="btn btn-success" type="submit">Add</button>
+                                <button class="btn btn-primary show-all" type="button">Show all</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="description">Описание</label>
-                        <textarea class="form-control" name="description" id="description" rows="3"></textarea>
-                    </div>
-                    <div class="buttons">
-                        <button class="btn btn-success" type="submit">Add</button>
-                        <button class="btn btn-primary show-all" type="button">Show all</button>
-                    </div>
-                </form>
+                </div>
+                <div class="tab-pane" id="profile" role="tabpanel">2</div>
+                <div class="tab-pane" id="messages" role="tabpanel">3</div>
+                <div class="tab-pane" id="settings" role="tabpanel">4</div>
             </div>
+
+
 
             <ul class="list-group task-list"></ul>
 
@@ -52,10 +59,11 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
 
 
 <script src="app.js"></script>
-<script src="../menu.js"></script>
 <script src="../../services/api.service.js"></script>
 <script src="../../services/transformService.js"></script>
 
