@@ -8,6 +8,7 @@
     <title>app</title>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="App.css">
+    <link rel="stylesheet" href="../../vendor/font-awesome-4.7/css/font-awesome.min.css">
 </head>
 <body>
 
@@ -15,40 +16,48 @@
     <div class="row">
         <div class="col-3" style="background: black;height: 340px;">
             <div class="menu">
-                <p><a href="">Vugar Guliev</a></p>
+                <p><a href="#" class="fa fa-user">Vugar Guliev</a></p>
                 <div class="list-group" id="myList" role="tablist">
-                    <a class="list-group-item list-group-item-action active" data-toggle="list" href="#home" role="tab">Home</a>
-                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#profile" role="tab">Profile</a>
-                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#messages" role="tab">Messages</a>
-                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings" role="tab">Settings</a>
+                    <a class="list-group-item list-group-item-action active fa fa-plus-circle" data-toggle="list" href="#addTask" role="tab">Add task</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#sport" role="tab">Sport</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#programming" role="tab">Programming</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#rest" role="tab">Rest</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#current_task" role="tab">Current tasks</a>
                 </div>
             </div>
         </div>
 
         <div class="col-9">
             <div class="tab-content">
-                <div class="tab-pane active" id="home" role="tabpanel">
+                <div class="tab-pane active" id="addTask" role="tabpanel">
                     <div class="AddTask">
-                        <h1>AddList</h1>
+                        <h1>Add Task</h1>
                         <form method="post" name="task">
                             <div class="form-group">
-                                <label for="name">Название</label>
+                                <label for="name">Name</label>
                                 <input type="text" class="form-control" name="name" id="name">
                             </div>
                             <div class="form-group">
-                                <label for="description">Описание</label>
+                                <label for="description">Description</label>
                                 <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <select class="custom-select">
+                                    <option value="Sport">Sport</option>
+                                    <option value="Programming">Programming</option>
+                                    <option value="Rest">Rest</option>
+                                    <option value="Current tasks">Current tasks</option>
+                                </select>
                             </div>
                             <div class="buttons">
                                 <button class="btn btn-success" type="submit">Add</button>
-                                <button class="btn btn-primary show-all" type="button">Show all</button>
                             </div>
                         </form>
-                    </div>
-                </div>
-                <div class="tab-pane" id="profile" role="tabpanel">2</div>
-                <div class="tab-pane" id="messages" role="tabpanel">3</div>
-                <div class="tab-pane" id="settings" role="tabpanel">4</div>
+                    </div></div>
+                <div class="tab-pane" id="sport" role="tabpanel"><h3>Sport</h3></div>
+                <div class="tab-pane" id="programming" role="tabpanel"><h3>Programming</h3></div>
+                <div class="tab-pane" id="rest" role="tabpanel"><h3>Rest</h3></div>
+                <div class="tab-pane" id="current_task" role="tabpanel"><h3>Current tasks</h3></div>
             </div>
 
 
@@ -59,6 +68,8 @@
     </div>
 </div>
 
+
+<script src="https://kit.fontawesome.com/a1cf0cbb25.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
 

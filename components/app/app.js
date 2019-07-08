@@ -1,7 +1,6 @@
 "use strict";
 
 var form = document.forms.namedItem("task");
-var showAll = document.querySelector(".show-all");
 
 var TaskForm = {
 
@@ -56,6 +55,4 @@ var TaskForm = {
     },
 };
 
-form.addEventListener("submit", TaskForm.createTask);
-showAll.addEventListener("click", TaskForm.getTasks);
 
