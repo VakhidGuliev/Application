@@ -8,6 +8,7 @@ var TaskForm = {
         var formData = {
             name: form.elements.namedItem("name").value,
             description: form.elements.namedItem("description").value,
+            categories: form.elements.namedItem("categories").querySelectorAll("option")
         };
 
         return formData;
@@ -18,8 +19,16 @@ var TaskForm = {
         event.preventDefault();
 
         var date = TaskForm.date();
+        var categoriesName;
 
-        await add(date, "/tasks.json");
+
+        for (let i = 0; i < date.categories.length; i++) {
+            if (date.categories[i].selected){
+                categoriesName= date.categories[i].value;
+            }
+        }
+
+        await add(date, `/Tasks/${categoriesName}.json`);
 
         form.reset();
 
@@ -36,7 +45,9 @@ var TaskForm = {
 
     },
     getTasks: async function () {
-        var dataTask = await get("/tasks.json");
+
+
+        var dataTask = await get(`/Tasks/${categoriesName}.json`);
 
         var promise = fbTransformToArray(dataTask);
 
@@ -55,4 +66,4 @@ var TaskForm = {
     },
 };
 
-
+form.addEventListener("submit",TaskForm.createTask);
