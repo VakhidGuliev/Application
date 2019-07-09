@@ -16,62 +16,49 @@
     <div class="row">
         <div class="col-3" style="background: black;height: 340px;">
             <div class="menu">
-                <p><a href="#" class="fa fa-user">Vugar Guliev</a></p>
+                <p>
+                    <a href="#" class="fa fa-user">
+                        <span class="user-name">Vugar Guliev</span>
+                    </a>
+                </p>
                 <div class="list-group" id="myList" role="tablist">
-                    <a class="list-group-item list-group-item-action active fa fa-plus-circle" data-toggle="list" href="#addTask" role="tab">Add task</a>
-                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#sport" role="tab">Sport</a>
-                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#programming" role="tab">Programming</a>
-                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#rest" role="tab">Rest</a>
-                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#current_task" role="tab">Current tasks</a>
+                    <a class="list-group-item list-group-item-action active" data-toggle="list" href="#Sport" role="tab">Sport</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#Programming" role="tab">Programming</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#Rest" role="tab">Rest</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="list" href="#Current_task" role="tab">Current tasks</a>
                 </div>
             </div>
         </div>
 
         <div class="col-9">
+            <div class="AddTask">
+                <h1 class="categoriesName"></h1>
+                <form method="post" name="task">
+                    <div class="form-group">
+                        <p style="margin-top: 20px"><input type="text" class="form-control" name="name" id="name"></p>
+                    </div>
+                    <div class="buttons">
+                        <button class="btn btn-success" type="submit">Add</button>
+                    </div>
+                </form>
+            </div>
             <div class="tab-content">
-                <div class="tab-pane active" id="addTask" role="tabpanel">
-                    <div class="AddTask">
-                        <h1>Add Task</h1>
-                        <form method="post" name="task">
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" name="name" id="name">
-                            </div>
-                            <div class="form-group">
-                                <label for="description">Description</label>
-                                <textarea class="form-control" name="description" id="description" rows="3"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <select class="custom-select" name="categories">
-                                    <option value="Sport" selected>Sport</option>
-                                    <option value="Programming">Programming</option>
-                                    <option value="Rest">Rest</option>
-                                    <option value="Current tasks">Current tasks</option>
-                                </select>
-                            </div>
-                            <div class="buttons">
-                                <button class="btn btn-success" type="submit">Add</button>
-                            </div>
-                        </form>
-                    </div></div>
-                <div class="tab-pane" id="sport" role="tabpanel"><h3>Sport</h3></div>
-                <div class="tab-pane" id="programming" role="tabpanel"><h3>Programming</h3></div>
-                <div class="tab-pane" id="rest" role="tabpanel"><h3>Rest</h3></div>
-                <div class="tab-pane" id="current_task" role="tabpanel"><h3>Current tasks</h3></div>
+                <div class="tab-pane active" id="Sport" role="tabpanel"></div>
+                <div class="tab-pane" id="Programming" role="tabpanel"></div>
+                <div class="tab-pane" id="Rest" role="tabpanel"></div>
+                <div class="tab-pane" id="Current_task" role="tabpanel"></div>
             </div>
 
         </div>
     </div>
 </div>
 
-
-<script src="https://kit.fontawesome.com/a1cf0cbb25.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
-
-
 <script src="app.js"></script>
 <script src="../../services/api.service.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
 <script src="../../services/transformService.js"></script>
 
 </body>
