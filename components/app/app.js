@@ -61,13 +61,22 @@ var TaskForm = {
         var tabContent = document.querySelector(".tab-content .tab-pane.active");
 
         promise.then(function (arr) {
+            tabContent.innerHTML = "";
 
             arr.forEach(function (item) {
-                var taskName = document.createElement("p");
-                taskName.innerText = item.name;
-                tabContent.insertAdjacentElement("afterbegin",taskName)
+                var listGroup = document.createElement("div");
+                listGroup.innerHTML = `<a style="margin-top:10px;" class="list-group-item list-group-item-action list-group-item-primary" href="#">${item.name}</a>`;
+                tabContent.insertAdjacentElement("afterbegin", listGroup);
+                document.querySelector(".categoriesName").innerHTML = `${item.categoryName}`
             })
-        }).catch(e => console.log(e.message));
+        }).catch(e => {
+            setTimeout(function () {
+                tabContent.innerHTML = `<a style="margin-top:10px;" class="list-group-item list-group-item-action list-group-item-danger" href="#">Нет созданных записей!</a>`;
+            }, 100);
+            setTimeout(function () {
+                document.querySelector(".list-group-item-danger").remove();
+            }, 2000)
+        });
     },
 };
 
