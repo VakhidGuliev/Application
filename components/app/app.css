@@ -18,4 +18,17 @@ li.task-list-item{
 }
 a{
     color: #fff;
+    cursor: pointer;
+}
+h1{
+    color: #fff;
+}
+
+.main-block{
+    background-image: url("../../files/app_bg.jpg");
+    background-size: cover;
+    height: 700px;
+}
+.user-block{
+    background: #66938c;
 }
