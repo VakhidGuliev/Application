@@ -23,7 +23,7 @@ async function get(address) {
       method: 'get'
     });
     const response = await fetch(request);
-    return await response.json();
+    return response.json();
   } catch (error) {
     console.error(error)
   }

@@ -3,6 +3,7 @@
     var form = document.forms.namedItem("task");
     var listGroup = document.querySelector('.list-group');
 
+
     var TaskForm = {
         jsonIsLoaded: false,
 
@@ -42,7 +43,7 @@
                 alert.classList.add("alert");
                 alert.classList.add("alert-success");
                 alert.innerText = "Запись успешно добавлена!";
-                document.querySelector(".container").insertAdjacentElement("afterbegin", alert);
+                document.querySelector(".container-fluid").insertAdjacentElement("afterbegin", alert);
             }, 500);
             setTimeout(function () {
                 document.querySelector(".alert.alert-success").remove();
@@ -50,27 +51,27 @@
 
         },
         getTasks: async function () {
-            var tabContent = document.querySelector(".tab-content .tab-pane.active");
-            let date = TaskForm.date();
-            let dataTask = await get(`/Tasks/${date.categoryName}.json`);
+            let dataTask = await get("/Tasks.json");
             let promise = fbTransformToArray(dataTask);
 
             promise.then(function (arr) {
                 TaskForm.jsonIsLoaded = true;
-                tabContent.innerHTML = "";
 
-                arr.forEach(function (item) {
-                    var listGroup = document.createElement("div");
-                    listGroup.innerHTML = `<a style="margin-top:10px;" class="list-group-item list-group-item-action list-group-item-primary" href="#">${item.name}</a>`;
-                    tabContent.insertAdjacentElement("afterbegin", listGroup);
-                });
+                for (let i = 0; i < arr.length; i++) {
+                    var taskObjects = arr[i];
+
+                    for (var key in taskObjects) {
+
+                        var template = `<li class="list-group-item list-group-item-primary"><a>${taskObjects[key].name}</a></li>`;
+                        document.querySelectorAll(`.tab-content .tab-pane`).forEach(item => {
+                            if (item.dataset.name === `${taskObjects[key].categoryName}`){
+                                item.insertAdjacentHTML("afterbegin", template);
+                            }
+                        });
+                    }
+                }
             }).catch(e => {
-                setTimeout(function () {
-                    tabContent.innerHTML = `<a style="margin-top:10px;" class="list-group-item list-group-item-action list-group-item-danger" href="#">Нет созданных записей!</a>`;
-                }, 100);
-                setTimeout(function () {
-                    document.querySelector(".list-group-item-danger").remove();
-                }, 2000);
+                console.log(e.message)
             });
         },
         showTab: function (e) {
@@ -90,12 +91,11 @@
             document.querySelector(`.tab-pane[id=${linkName}]`).classList.add("active");
             document.querySelector(".categoriesName").innerHTML = linkName;
 
-
-            TaskForm.getTasks();
-
         }
     };
 
+
+    window.addEventListener("load", TaskForm.getTasks);
     listGroup.addEventListener('click', TaskForm.showTab);
     form.addEventListener("submit", TaskForm.createTask);
 
