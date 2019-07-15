@@ -17,7 +17,6 @@ li.task-list-item{
 
 }
 a{
-    color: #fff;
     cursor: pointer;
 }
 h1{
@@ -30,5 +29,8 @@ h1{
     height: 700px;
 }
 .user-block{
-    background: #66938c;
+}
+
+.menu-block{
+    background-color: #e4e1be26;
 }

@@ -3,7 +3,6 @@
     var form = document.forms.namedItem("task");
     var listGroup = document.querySelector('.list-group');
 
-
     var TaskForm = {
         jsonIsLoaded: false,
 
@@ -11,7 +10,6 @@
             var formData = {
                 name: form.elements.namedItem("name").value,
                 categoryName: TaskForm.getCategoryName(),
-                id: Math.round(Math.random() * (100 - 1) + 1),
                 Date: new Date().toLocaleDateString(),
                 Time: new Date().toLocaleTimeString()
             };
@@ -19,8 +17,8 @@
             return formData;
         },
         getCategoryName: function () {
-            var tabName = document.querySelectorAll(".tab-content .tab-pane");
             var categoriesName;
+            let tabName = document.querySelectorAll(".tab-content .tab-pane");
 
             for (let i = 0; i < tabName.length; i++) {
                 if (tabName[i].classList.contains("active")) {
@@ -36,6 +34,9 @@
 
             await add(date, `/Tasks/${date.categoryName}.json`);
 
+            document.querySelector(".tab-content .tab-pane.active")
+                .insertAdjacentHTML("afterbegin", `<li class="list-group-item list-group-item-light"><a>${date.name}</a></li>`);
+
             form.reset();
 
             setTimeout(function () {
@@ -50,9 +51,32 @@
             }, 2000)
 
         },
+        createCategory: async function () {
+            var categoryName = document.querySelector("#creatList").value;
+
+            await add(categoryName, `/Tasks/${categoryName}.json`);
+
+            var list = `<a class="list-group-item list-group-item-action" data-name="${categoryName}" role="tab">${categoryName}</a>`;
+            var tab = `<div class="tab-pane" id="${categoryName}" role="tabpanel" data-name="${categoryName}"></div>`;
+
+            document.querySelector("#myList").insertAdjacentHTML("beforeend", list);
+            document.querySelector(".tab-content").insertAdjacentHTML("beforeend", tab);
+        },
         getTasks: async function () {
             let dataTask = await get("/Tasks.json");
             let promise = fbTransformToArray(dataTask);
+
+            let tabName = document.querySelectorAll(".tab-content .tab-pane");
+            var TaskListKeys = Object.keys(dataTask);
+
+            TaskListKeys.forEach((value, index) => {
+                if (value !== tabName[index].id) {
+                    var tabList = `<a class="list-group-item list-group-item-action" data-name="${value}" role="tab">${value}</a>`;
+                    var tabContent = `<div class="tab-pane" id="${value}" data-name="${value}" role="tabpanel"></div>`;
+                    document.querySelector("#myList").insertAdjacentHTML("beforeend", tabList);
+                    document.querySelector(".tab-content").insertAdjacentHTML("beforeend", tabContent);
+                }
+            });
 
             promise.then(function (arr) {
                 TaskForm.jsonIsLoaded = true;
@@ -61,10 +85,9 @@
                     var taskObjects = arr[i];
 
                     for (var key in taskObjects) {
-
-                        var template = `<li class="list-group-item list-group-item-primary"><a>${taskObjects[key].name}</a></li>`;
+                        var template = `<li class="list-group-item list-group-item-light"><a>${taskObjects[key].name}</a></li>`;
                         document.querySelectorAll(`.tab-content .tab-pane`).forEach(item => {
-                            if (item.dataset.name === `${taskObjects[key].categoryName}`){
+                            if (item.dataset.name === `${taskObjects[key].categoryName}`) {
                                 item.insertAdjacentHTML("afterbegin", template);
                             }
                         });
@@ -96,8 +119,14 @@
 
 
     window.addEventListener("load", TaskForm.getTasks);
+
     listGroup.addEventListener('click', TaskForm.showTab);
     form.addEventListener("submit", TaskForm.createTask);
+
+
+    var btnCreateList = document.querySelector("#btnCreateList");
+    btnCreateList.addEventListener("click", TaskForm.createCategory);
+
 
 })();
 

@@ -7,8 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>app</title>
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="App.css">
+    <link rel="stylesheet" href="app.css">
     <link rel="stylesheet" href="../../vendor/font-awesome-4.7/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -20,16 +24,19 @@
                     <span class="user-name">Vugar Guliev</span>
                 </a>
             </p>
+
+
             <div class="list-group" id="myList" role="tablist">
                 <a class="list-group-item list-group-item-action active" data-name="Sport" role="tab">Sport</a>
                 <a class="list-group-item list-group-item-action" data-name="Programming" role="tab">Programming</a>
-                <a class="list-group-item list-group-item-action" data-name="Rest" role="tab">Rest</a>
-                <a class="list-group-item list-group-item-action" data-name="Current_task" role="tab">Current tasks</a>
-                <a class="list-group-item list-group-item-action" data-name="Job" role="tab">Job</a>
-                <a class="list-group-item list-group-item-action" data-name="Goals" role="tab">Goals</a>
+                <a class="list-group-item list-group-item-action" data-name="Current" role="tab">Current</a>
                 <a class="list-group-item list-group-item-action" data-name="Films" role="tab">Films</a>
-                <a class="list-group-item list-group-item-action" data-name="Business" role="tab">Business</a>
             </div>
+            <hr>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                Create a list
+            </button>
         </div>
 
         <div class="col-9 main-block">
@@ -47,20 +54,40 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="Sport" data-name="Sport" role="tabpanel"></div>
                 <div class="tab-pane" id="Programming" role="tabpanel" data-name="Programming"></div>
-                <div class="tab-pane" id="Rest" role="tabpanel" data-name="Rest"></div>
-                <div class="tab-pane" id="Current_task" role="tabpanel" data-name="Current_task"></div>
-                <div class="tab-pane" id="Job" role="tabpanel" data-name="Job"></div>
-                <div class="tab-pane" id="Goals" role="tabpanel" data-name="Goals"></div>
+                <div class="tab-pane" id="Current" role="tabpanel" data-name="Current"></div>
                 <div class="tab-pane" id="Films" role="tabpanel" data-name="Films"></div>
-                <div class="tab-pane" id="Business" role="tabpanel" data-name="Business"></div>
             </div>
 
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Create new list</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="form-group">
+                                <input type="text" class="form-control" id="creatList" placeholder="create a list">
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" id="btnCreateList" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <!--<script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js"></script>-->
 <!--<script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-database.js"></script>-->
+
 
 <script src="app.js"></script>
 <script src="../../services/api.service.js"></script>
