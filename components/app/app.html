@@ -27,16 +27,13 @@
 
 
             <div class="list-group" id="myList" role="tablist">
-                <a class="list-group-item list-group-item-action active" data-name="Sport" role="tab">Sport</a>
-                <a class="list-group-item list-group-item-action" data-name="Programming" role="tab">Programming</a>
-                <a class="list-group-item list-group-item-action" data-name="Current" role="tab">Current</a>
-                <a class="list-group-item list-group-item-action" data-name="Films" role="tab">Films</a>
+                <a class="list-group-item list-group-item-action active fa fa-list-ul" data-name="Sport" role="tab"><span class="listName">Sport</span></a>
+                <a class="list-group-item list-group-item-action fa fa-list-ul" data-name="Current" role="tab"><span class="listName">Current</span></a>
             </div>
+
             <hr>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                Create a list
-            </button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#creteListModal">Create a list</button>
         </div>
 
         <div class="col-9 main-block">
@@ -53,30 +50,33 @@
             </div>
             <div class="tab-content">
                 <div class="tab-pane active" id="Sport" data-name="Sport" role="tabpanel"></div>
-                <div class="tab-pane" id="Programming" role="tabpanel" data-name="Programming"></div>
                 <div class="tab-pane" id="Current" role="tabpanel" data-name="Current"></div>
-                <div class="tab-pane" id="Films" role="tabpanel" data-name="Films"></div>
             </div>
 
             <!-- Modal -->
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal fade" id="creteListModal" tabindex="-1" role="dialog"
+                 aria-labelledby="creteListModalTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Create new list</h5>
+                            <h5 class="modal-title" id="creteListModalLongTitle">Create new list</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p class="form-group">
-                                <input type="text" class="form-control" id="creatList" placeholder="create a list">
-                            </p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" id="btnCreateList" class="btn btn-primary">Save</button>
+                            <form name="createListForm">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="creatList" placeholder="create a list">
+                                    <span class="invalid-feedback">
+                                        please enter correct name.
+                                    </span>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" id="btnCreateList" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

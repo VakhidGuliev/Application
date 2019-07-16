@@ -1,6 +1,7 @@
 "use strict";
 (function () {
     var form = document.forms.namedItem("task");
+    var createListForm = document.forms.namedItem("createListForm");
     var listGroup = document.querySelector('.list-group');
 
     var TaskForm = {
@@ -51,16 +52,29 @@
             }, 2000)
 
         },
-        createCategory: async function () {
-            var categoryName = document.querySelector("#creatList").value;
+        createCategory: async function (event) {
 
-            await add(categoryName, `/Tasks/${categoryName}.json`);
+            event.preventDefault();
 
-            var list = `<a class="list-group-item list-group-item-action" data-name="${categoryName}" role="tab">${categoryName}</a>`;
-            var tab = `<div class="tab-pane" id="${categoryName}" role="tabpanel" data-name="${categoryName}"></div>`;
+            var categoryName = document.querySelector("#creatList");
 
-            document.querySelector("#myList").insertAdjacentHTML("beforeend", list);
-            document.querySelector(".tab-content").insertAdjacentHTML("beforeend", tab);
+            if (categoryName && isNaN(categoryName.value)) {
+                await add(categoryName.value, `/Tasks/${categoryName.value}.json`);
+
+                var list = `<a class="list-group-item list-group-item-action fa fa-list-ul" data-name="${categoryName.value}" role="tab"><span class="listName">${categoryName.value}</span></a>`;
+                var tab = `<div class="tab-pane" id="${categoryName.value}" role="tabpanel" data-name="${categoryName.value}"></div>`;
+
+                document.querySelector("#myList").insertAdjacentHTML("beforeend", list);
+                document.querySelector(".tab-content").insertAdjacentHTML("beforeend", tab);
+
+                categoryName.classList.remove("is-invalid");
+                categoryName.classList.add("is-valid");
+                $('#creteListModal').modal('hide');
+                createListForm.reset();
+
+            } else {
+                categoryName.classList.add("is-invalid");
+            }
         },
         getTasks: async function () {
             let dataTask = await get("/Tasks.json");
@@ -71,7 +85,7 @@
 
             TaskListKeys.forEach((value, index) => {
                 if (value !== tabName[index].id) {
-                    var tabList = `<a class="list-group-item list-group-item-action" data-name="${value}" role="tab">${value}</a>`;
+                    var tabList = `<a class="list-group-item list-group-item-action fa fa-list-ul" data-name="${value}" role="tab"><span class="listName">${value}</span></a>`;
                     var tabContent = `<div class="tab-pane" id="${value}" data-name="${value}" role="tabpanel"></div>`;
                     document.querySelector("#myList").insertAdjacentHTML("beforeend", tabList);
                     document.querySelector(".tab-content").insertAdjacentHTML("beforeend", tabContent);
@@ -119,13 +133,9 @@
 
 
     window.addEventListener("load", TaskForm.getTasks);
-
+    createListForm.addEventListener("submit", TaskForm.createCategory);
     listGroup.addEventListener('click', TaskForm.showTab);
     form.addEventListener("submit", TaskForm.createTask);
-
-
-    var btnCreateList = document.querySelector("#btnCreateList");
-    btnCreateList.addEventListener("click", TaskForm.createCategory);
 
 
 })();
