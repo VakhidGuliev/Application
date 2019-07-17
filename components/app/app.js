@@ -17,6 +17,19 @@
 
             return formData;
         },
+        TabDate: function () {
+            var tabData = {
+                listContainer: document.querySelector("#myList"),
+                tabContainer: document.querySelector(".tab-content"),
+                renderLists: function (list) {
+                    return `<a class="list-group-item list-group-item-action fa fa-list-ul" data-name="${list}" role="tab"><span class="listName">${list}</span></a>`
+                },
+                renderTabs: function (tab) {
+                    return `<div class="tab-pane" id="${tab}" data-name="${tab}" role="tabpanel"></div>`
+                }
+            };
+            return tabData;
+        },
         getCategoryName: function () {
             var categoriesName;
             let tabName = document.querySelectorAll(".tab-content .tab-pane");
@@ -57,21 +70,24 @@
             event.preventDefault();
 
             var categoryName = document.querySelector("#creatList");
+            let tabNameLength = document.querySelector(`.tab-content .tab-pane[id="${categoryName.value}"]`);
 
-            if (categoryName && isNaN(categoryName.value)) {
+            if (categoryName.value && isNaN(categoryName.value) && tabNameLength === null) {
+
                 await add(categoryName.value, `/Tasks/${categoryName.value}.json`);
 
-                var list = `<a class="list-group-item list-group-item-action fa fa-list-ul" data-name="${categoryName.value}" role="tab"><span class="listName">${categoryName.value}</span></a>`;
-                var tab = `<div class="tab-pane" id="${categoryName.value}" role="tabpanel" data-name="${categoryName.value}"></div>`;
+                let dateTab = TaskForm.TabDate();
 
-                document.querySelector("#myList").insertAdjacentHTML("beforeend", list);
-                document.querySelector(".tab-content").insertAdjacentHTML("beforeend", tab);
+                dateTab.listContainer.insertAdjacentHTML("beforeend", dateTab.renderLists(categoryName.value));
+                dateTab.tabContainer.insertAdjacentHTML("beforeend", dateTab.renderTabs(categoryName.value));
+
 
                 categoryName.classList.remove("is-invalid");
                 categoryName.classList.add("is-valid");
-                $('#creteListModal').modal('hide');
+
                 createListForm.reset();
 
+                $('#creteListModal').modal('hide');
             } else {
                 categoryName.classList.add("is-invalid");
             }
@@ -80,20 +96,18 @@
             let dataTask = await get("/Tasks.json");
             let promise = fbTransformToArray(dataTask);
 
-            let tabName = document.querySelectorAll(".tab-content .tab-pane");
-            var TaskListKeys = Object.keys(dataTask);
-
-            TaskListKeys.forEach((value, index) => {
-                if (value !== tabName[index].id) {
-                    var tabList = `<a class="list-group-item list-group-item-action fa fa-list-ul" data-name="${value}" role="tab"><span class="listName">${value}</span></a>`;
-                    var tabContent = `<div class="tab-pane" id="${value}" data-name="${value}" role="tabpanel"></div>`;
-                    document.querySelector("#myList").insertAdjacentHTML("beforeend", tabList);
-                    document.querySelector(".tab-content").insertAdjacentHTML("beforeend", tabContent);
-                }
-            });
 
             promise.then(function (arr) {
                 TaskForm.jsonIsLoaded = true;
+                var TaskListKeys = Object.keys(dataTask);
+
+                TaskListKeys.forEach((value) => {
+
+                    let dateTab = TaskForm.TabDate();
+
+                    dateTab.listContainer.insertAdjacentHTML("beforeend", dateTab.renderLists(value));
+                    dateTab.tabContainer.insertAdjacentHTML("beforeend", dateTab.renderTabs(value));
+                });
 
                 for (let i = 0; i < arr.length; i++) {
                     var taskObjects = arr[i];
@@ -102,7 +116,7 @@
                         var template = `<li class="list-group-item list-group-item-light"><a>${taskObjects[key].name}</a></li>`;
                         document.querySelectorAll(`.tab-content .tab-pane`).forEach(item => {
                             if (item.dataset.name === `${taskObjects[key].categoryName}`) {
-                                item.insertAdjacentHTML("afterbegin", template);
+                                item.insertAdjacentHTML("beforeend", template);
                             }
                         });
                     }
@@ -128,7 +142,7 @@
             document.querySelector(`.tab-pane[id=${linkName}]`).classList.add("active");
             document.querySelector(".categoriesName").innerHTML = linkName;
 
-        }
+        },
     };
 
 
@@ -139,4 +153,3 @@
 
 
 })();
-
