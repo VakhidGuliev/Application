@@ -9,23 +9,22 @@
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="app.css">
     <link rel="stylesheet" href="../../vendor/font-awesome-4.7/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" ntegrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
 
 <div class="container-fluid">
     <div class="row">
+
         <div class="col-3 menu-block">
-            <p class="user-block">
+            <div class="user-block">
                 <a href="#" class="fa fa-user">
                     <span class="user-name">Vugar Guliev</span>
                 </a>
-            </p>
+            </div>
 
-
+            <!-- Tab list-->
             <div class="list-group" id="myList" role="tablist"></div>
 
             <hr>
@@ -45,6 +44,8 @@
                     </div>
                 </form>
             </div>
+
+            <!-- Tab content -->
             <div class="tab-content"></div>
 
             <!-- Modal -->
@@ -79,14 +80,9 @@
     </div>
 </div>
 
-<!--<script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js"></script>-->
-<!--<script src="https://www.gstatic.com/firebasejs/6.3.0/firebase-database.js"></script>-->
-
 
 <script src="app.js"></script>
 <script src="../../services/api.service.js"></script>
-
-
 <script src="../../services/transformService.js"></script>
 
 </body>

@@ -18,6 +18,9 @@ a{
 h1{
     color: #fff;
 }
+span,i{
+    pointer-events: none;
+}
 
 .main-block{
     background-image: url("../../files/app_bg.jpg");
@@ -32,7 +35,10 @@ h1{
 }
 .listName{
     margin-left: 5px;
+    display: inline-block;
+    width: 160px;
 }
 .list-group-item.active{
     color: #fff !important;
+    background-color: #000000;
 }

@@ -21,11 +21,15 @@
             var tabData = {
                 listContainer: document.querySelector("#myList"),
                 tabContainer: document.querySelector(".tab-content"),
-                renderLists: function (list) {
-                    return `<a class="list-group-item list-group-item-action fa fa-list-ul" data-name="${list}" role="tab"><span class="listName">${list}</span></a>`
+                renderLists: function (list, index, array) {
+                    return `<a class="list-group-item list-group-item-action" data-name="${list}" data-index="${index}" role="tab">
+                                <i class="fa fa-list-ul"></i>
+                                <span class="listName">${list}</span>
+                                <span class="listCount badge badge-primary badge-pill">${array}</span>
+                            </a>`
                 },
-                renderTabs: function (tab) {
-                    return `<div class="tab-pane" id="${tab}" data-name="${tab}" role="tabpanel"></div>`
+                renderTabs: function (tab, index) {
+                    return `<div class="tab-pane" id="${tab}" data-name="${tab}" data-index="${index}" role="tabpanel"></div>`
                 }
             };
             return tabData;
@@ -48,10 +52,9 @@
 
             await add(date, `/Tasks/${date.categoryName}.json`);
 
-            document.querySelector(".tab-content .tab-pane.active")
-                .insertAdjacentHTML("afterbegin", `<li class="list-group-item list-group-item-light"><a>${date.name}</a></li>`);
-
             form.reset();
+
+            TaskForm.getTasks();
 
             setTimeout(function () {
                 var alert = document.createElement("div");
@@ -63,23 +66,25 @@
             setTimeout(function () {
                 document.querySelector(".alert.alert-success").remove();
             }, 2000)
-
         },
         createCategory: async function (event) {
 
             event.preventDefault();
 
-            var categoryName = document.querySelector("#creatList");
-            let tabNameLength = document.querySelector(`.tab-content .tab-pane[id="${categoryName.value}"]`);
+            let categoryName = document.querySelector("#creatList");
+            let categoryNameValue= document.querySelector("#creatList").value.toString().trim();
+            let tabNameLength = document.querySelector(`.tab-content .tab-pane[id="${categoryNameValue}"]`);
+            let listLength = document.querySelectorAll("#myList a").length;
 
-            if (categoryName.value && isNaN(categoryName.value) && tabNameLength === null) {
 
-                await add(categoryName.value, `/Tasks/${categoryName.value}.json`);
+            if (categoryNameValue && isNaN(categoryNameValue) && tabNameLength === null) {
+
+                await add(categoryNameValue, `/Tasks/${categoryNameValue}.json`);
 
                 let dateTab = TaskForm.TabDate();
 
-                dateTab.listContainer.insertAdjacentHTML("beforeend", dateTab.renderLists(categoryName.value));
-                dateTab.tabContainer.insertAdjacentHTML("beforeend", dateTab.renderTabs(categoryName.value));
+                dateTab.listContainer.insertAdjacentHTML("beforeend", dateTab.renderLists(categoryNameValue, listLength, 0));
+                dateTab.tabContainer.insertAdjacentHTML("beforeend", dateTab.renderTabs(categoryNameValue, listLength));
 
 
                 categoryName.classList.remove("is-invalid");
@@ -99,14 +104,23 @@
 
             promise.then(function (arr) {
                 TaskForm.jsonIsLoaded = true;
+
+                //Update database
+                document.querySelector("#myList").innerHTML = "";
+                document.querySelector(".tab-content").innerHTML = "";
+
+                //rendering
                 var TaskListKeys = Object.keys(dataTask);
-
-                TaskListKeys.forEach((value) => {
-
+                TaskListKeys.forEach((value, index, array) => {
                     let dateTab = TaskForm.TabDate();
 
-                    dateTab.listContainer.insertAdjacentHTML("beforeend", dateTab.renderLists(value));
-                    dateTab.tabContainer.insertAdjacentHTML("beforeend", dateTab.renderTabs(value));
+                    array = arr;
+
+                    dateTab.listContainer.insertAdjacentHTML("beforeend", dateTab.renderLists(value, index, array[index].tasksCount));
+                    dateTab.tabContainer.insertAdjacentHTML("beforeend", dateTab.renderTabs(value, index));
+
+                    document.querySelector("#myList a:first-child").classList.add("active");
+                    document.querySelector(".tab-content .tab-pane:first-child").classList.add("active");
                 });
 
                 for (let i = 0; i < arr.length; i++) {
