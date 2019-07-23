@@ -9,29 +9,92 @@
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="app.css">
     <link rel="stylesheet" href="../../vendor/font-awesome-4.7/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" ntegrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            ntegrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
     <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
 
+<header>
+    <!--Navbar -->
+    <nav class="mb-1 navbar navbar-expand-lg navbar-dark secondary-color lighten-1" style="margin-bottom: 0 !important;border-bottom: 2px solid #3c6fae;">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+                aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">Dropdown
+                    </a>
+                    <div class="dropdown-menu dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-555">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto nav-flex-icons">
+                <li class="nav-item">
+                    <a class="nav-link waves-effect waves-light">1
+                        <i class="fa fa-envelope"></i>
+                    </a>
+                </li>
+                <li class="nav-item avatar dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <img src="https://pp.userapi.com/c849216/v849216580/9a271/phgXt3xKB84.jpg" class="avatar rounded-circle z-depth-0"
+                             alt="avatar image">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+                         aria-labelledby="navbarDropdownMenuLink-55">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--/.Navbar -->
+</header>
+
 <div class="container-fluid">
     <div class="row">
-
         <div class="col-3 menu-block">
             <div class="user-block">
                 <a href="#" class="fa fa-user">
                     <span class="user-name">Vugar Guliev</span>
                 </a>
             </div>
-
+            <div class="search-block input-group md-form form-sm form-2 pl-0">
+                <input class="form-control my-0 py-1 red-border" type="text" placeholder="Search task" aria-label="Search">
+                <div class="input-group-append">
+                    <span class="input-group-text red lighten-3" id="basic-text1"><i class="fa fa-search text-grey" aria-hidden="true"></i></span>
+                </div>
+            </div>
             <!-- Tab list-->
             <div class="list-group" id="myList" role="tablist"></div>
-
             <hr>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#creteListModal">Create a list</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#creteListModal">Create a
+                list
+            </button>
         </div>
-
         <div class="col-9 main-block">
             <div class="AddTask">
                 <h1 class="categoriesName"></h1>
@@ -44,10 +107,8 @@
                     </div>
                 </form>
             </div>
-
             <!-- Tab content -->
             <div class="tab-content"></div>
-
             <!-- Modal -->
             <div class="modal fade" id="creteListModal" tabindex="-1" role="dialog"
                  aria-labelledby="creteListModalTitle" aria-hidden="true">

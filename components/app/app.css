@@ -21,17 +21,23 @@ h1{
 span,i{
     pointer-events: none;
 }
+label{
+    margin-bottom: 0;
+}
 
 .main-block{
-    background-image: url("../../files/app_bg.jpg");
+    background-image: url("https://images6.alphacoders.com/925/925754.jpg");
     background-size: cover;
-    height: 700px;
+    padding-top: 25px;
+    height: 913px;
 }
 .user-block{
+    padding: 10px;
 }
 
 .menu-block{
     background-color: #e4e1be26;
+    border-right: 1px solid #3a70ae;
 }
 .listName{
     margin-left: 5px;
@@ -40,5 +46,26 @@ span,i{
 }
 .list-group-item.active{
     color: #fff !important;
-    background-color: #000000;
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.search-block{
+    position: relative;
+    margin-bottom: 12px;
+}
+
+label[for="search"]{
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    margin-right: 5px;
+}
+
+nav{
+    background: #78addd;
+}
+img.avatar{
+    height: 50px;
 }

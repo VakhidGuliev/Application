@@ -61,7 +61,7 @@
                 alert.classList.add("alert");
                 alert.classList.add("alert-success");
                 alert.innerText = "Запись успешно добавлена!";
-                document.querySelector(".container-fluid").insertAdjacentElement("afterbegin", alert);
+                document.querySelector(".tab-content").insertAdjacentElement("afterbegin", alert);
             }, 500);
             setTimeout(function () {
                 document.querySelector(".alert.alert-success").remove();
