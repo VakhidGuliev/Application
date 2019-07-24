@@ -69,3 +69,7 @@ nav{
 img.avatar{
     height: 50px;
 }
+
+.input-group-append{
+    cursor: pointer;
+}

@@ -6,6 +6,7 @@
 
     var TaskForm = {
         jsonIsLoaded: false,
+        Tasks: [],
 
         date: function () {
             var formData = {
@@ -49,30 +50,33 @@
             event.preventDefault();
 
             let date = TaskForm.date();
+            let dateTab = TaskForm.TabDate();
 
-            await add(date, `/Tasks/${date.categoryName}.json`);
+            if (dateTab.listContainer.children.length !== 0 && date.name.trim() !== "") {
+                await add(date, `/Tasks/${date.categoryName}.json`);
 
-            form.reset();
+                form.reset();
+                TaskForm.getTasks();
 
-            TaskForm.getTasks();
-
-            setTimeout(function () {
-                var alert = document.createElement("div");
-                alert.classList.add("alert");
-                alert.classList.add("alert-success");
-                alert.innerText = "Запись успешно добавлена!";
-                document.querySelector(".tab-content").insertAdjacentElement("afterbegin", alert);
-            }, 500);
-            setTimeout(function () {
-                document.querySelector(".alert.alert-success").remove();
-            }, 2000)
+                setTimeout(function () {
+                    var alert = document.createElement("div");
+                    alert.classList.add("alert");
+                    alert.classList.add("alert-success");
+                    alert.innerText = "Запись успешно добавлена!";
+                    document.querySelector(".tab-content").insertAdjacentElement("afterbegin", alert);
+                }, 500);
+                setTimeout(function () {
+                    document.querySelector(".alert.alert-success").remove();
+                }, 2000)
+            }
+            return false;
         },
         createCategory: async function (event) {
 
             event.preventDefault();
 
             let categoryName = document.querySelector("#creatList");
-            let categoryNameValue= document.querySelector("#creatList").value.toString().trim();
+            let categoryNameValue = document.querySelector("#creatList").value.toString().trim();
             let tabNameLength = document.querySelector(`.tab-content .tab-pane[id="${categoryNameValue}"]`);
             let listLength = document.querySelectorAll("#myList a").length;
 
@@ -83,10 +87,21 @@
 
                 let dateTab = TaskForm.TabDate();
 
+                // rendering
                 dateTab.listContainer.insertAdjacentHTML("beforeend", dateTab.renderLists(categoryNameValue, listLength, 0));
                 dateTab.tabContainer.insertAdjacentHTML("beforeend", dateTab.renderTabs(categoryNameValue, listLength));
 
+                //delete active class
+                dateTab.listContainer.querySelectorAll("a").forEach(value => value.classList.remove("active"));
+                dateTab.tabContainer.querySelectorAll(".tab-pane").forEach(value => value.classList.remove("active"));
 
+                //add active class created category
+                dateTab.listContainer.querySelector(`a[data-name=${categoryNameValue}]`).classList.add("active");
+                dateTab.tabContainer.querySelector(`.tab-pane[data-name=${categoryNameValue}]`).classList.add("active");
+
+                document.querySelector(".categoriesName").innerHTML = categoryNameValue;
+
+                // valid categoryName
                 categoryName.classList.remove("is-invalid");
                 categoryName.classList.add("is-valid");
 
@@ -116,11 +131,18 @@
 
                     array = arr;
 
-                    dateTab.listContainer.insertAdjacentHTML("beforeend", dateTab.renderLists(value, index, array[index].tasksCount));
-                    dateTab.tabContainer.insertAdjacentHTML("beforeend", dateTab.renderTabs(value, index));
+                    dateTab.listContainer.insertAdjacentHTML("afterbegin", dateTab.renderLists(value, index, array[index].tasksCount));
+                    dateTab.tabContainer.insertAdjacentHTML("afterbegin", dateTab.renderTabs(value, index));
+
+                    dateTab.listContainer.querySelectorAll("a").forEach(value => value.classList.remove("active"));
+                    dateTab.tabContainer.querySelectorAll(".tab-pane").forEach(value => value.classList.remove("active"));
 
                     document.querySelector("#myList a:first-child").classList.add("active");
                     document.querySelector(".tab-content .tab-pane:first-child").classList.add("active");
+
+                    document.querySelector(".categoriesName").innerHTML = value;
+
+                    console.log(value);
                 });
 
                 for (let i = 0; i < arr.length; i++) {
@@ -131,6 +153,7 @@
                         document.querySelectorAll(`.tab-content .tab-pane`).forEach(item => {
                             if (item.dataset.name === `${taskObjects[key].categoryName}`) {
                                 item.insertAdjacentHTML("beforeend", template);
+                                TaskForm.Tasks.push(taskObjects[key].name);
                             }
                         });
                     }
@@ -157,8 +180,17 @@
             document.querySelector(".categoriesName").innerHTML = linkName;
 
         },
+        findTask: function () {
+            let valueSearch = document.querySelector("#searchTask").value;
+            var findTask = TaskForm.Tasks.slice().find(value => value === valueSearch);
+            let tabDate = TaskForm.TabDate();
+            let template = `<li class="list-group-item list-group-item-light"><a>${findTask}</a></li>`;
+
+            console.log(findTask);
+        }
     };
 
+    document.querySelector(".input-group-append").addEventListener("click", TaskForm.findTask);
 
     window.addEventListener("load", TaskForm.getTasks);
     createListForm.addEventListener("submit", TaskForm.createCategory);
