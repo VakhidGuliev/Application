@@ -73,3 +73,18 @@ img.avatar{
 .input-group-append{
     cursor: pointer;
 }
+
+.tab-pane.hide{
+    display: none !important;
+}
+
+.tab-pane.show{
+    display: block !important;
+}
+
+.search-block .form-group {
+    display: flex;
+}
+form[name="search_form"]{
+    width: 100%;
+}

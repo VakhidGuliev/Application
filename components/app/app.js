@@ -1,6 +1,7 @@
 "use strict";
 (function () {
     var form = document.forms.namedItem("task");
+    var searchForm = document.forms.namedItem("search_form");
     var createListForm = document.forms.namedItem("createListForm");
     var listGroup = document.querySelector('.list-group');
 
@@ -163,6 +164,7 @@
             });
         },
         showTab: function (e) {
+
             var link = e.target;
 
             if (!link.classList.contains('list-group-item')) {
@@ -170,10 +172,19 @@
             }
 
             var linkName = link.dataset.name;
+            var listSearch = document.querySelector(".tab-content .searchList");
 
             document.querySelectorAll('.tab-pane, .list-group-item').forEach(el => {
                 el.classList.remove("active");
             });
+
+            document.querySelectorAll(".tab-pane").forEach(value => value.classList.remove("hide"));
+            document.querySelectorAll(".tab-pane.active").forEach(value => value.classList.add("show"));
+
+            if (listSearch){
+                listSearch.remove();
+            }
+
 
             link.classList.add("active");
             document.querySelector(`.tab-pane[id=${linkName}]`).classList.add("active");
@@ -181,16 +192,25 @@
 
         },
         findTask: function () {
+
             let valueSearch = document.querySelector("#searchTask").value;
             var findTask = TaskForm.Tasks.slice().find(value => value === valueSearch);
             let tabDate = TaskForm.TabDate();
-            let template = `<li class="list-group-item list-group-item-light"><a>${findTask}</a></li>`;
+            let template = `<div class="searchList"><li class="list-group-item list-group-item-light"><a>${findTask}</a></li></div>`;
 
-            console.log(findTask);
+            document.querySelector(".AddTask").style.display = "none";
+            tabDate.tabContainer.querySelectorAll(".tab-pane.active").forEach(value => value.classList.add("hide"));
+
+            if (findTask !== undefined){
+                tabDate.tabContainer.insertAdjacentHTML("afterbegin", template);
+            }
+            document.querySelector(".categoriesName").innerHTML = "Found tasks";
+            searchForm.reset();
         }
     };
 
-    document.querySelector(".input-group-append").addEventListener("click", TaskForm.findTask);
+
+    document.querySelector(".input-group-append").addEventListener("click",TaskForm.findTask);
 
     window.addEventListener("load", TaskForm.getTasks);
     createListForm.addEventListener("submit", TaskForm.createCategory);

@@ -82,10 +82,14 @@
                 </a>
             </div>
             <div class="search-block input-group md-form form-sm form-2 pl-0">
-                <input class="form-control my-0 py-1 red-border" id="searchTask" type="text" placeholder="Search task" aria-label="Search">
-                <div class="input-group-append">
-                    <span class="input-group-text red lighten-3" id="basic-text1"><i class="fa fa-search text-grey" aria-hidden="true"></i></span>
-                </div>
+                <form name="search_form">
+                    <div class="form-group">
+                        <input class="form-control my-0 py-1 red-border" id="searchTask" type="text" placeholder="Search task" aria-label="Search">
+                        <div class="input-group-append">
+                            <span class="input-group-text red lighten-3" id="search_btn"><i class="fa fa-search text-grey" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </form>
             </div>
             <!-- Tab list-->
             <div class="list-group" id="myList" role="tablist"></div>
@@ -96,8 +100,8 @@
             </button>
         </div>
         <div class="col-9 main-block">
+            <h1 class="categoriesName"></h1>
             <div class="AddTask">
-                <h1 class="categoriesName"></h1>
                 <form method="post" name="task">
                     <div class="form-group">
                         <p style="margin-top: 20px;display:flex;">
