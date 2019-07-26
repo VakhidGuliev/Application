@@ -8,6 +8,7 @@
     var TaskForm = {
         jsonIsLoaded: false,
         Tasks: [],
+        isFind: false,
 
         date: function () {
             var formData = {
@@ -57,10 +58,10 @@
                 await add(date, `/Tasks/${date.categoryName}.json`);
 
                 form.reset();
-                TaskForm.getTasks();
+                await TaskForm.getTasks();
 
                 setTimeout(function () {
-                    var alert = document.createElement("div");
+                    const alert = document.createElement("div");
                     alert.classList.add("alert");
                     alert.classList.add("alert-success");
                     alert.innerText = "Запись успешно добавлена!";
@@ -142,8 +143,6 @@
                     document.querySelector(".tab-content .tab-pane:first-child").classList.add("active");
 
                     document.querySelector(".categoriesName").innerHTML = value;
-
-                    console.log(value);
                 });
 
                 for (let i = 0; i < arr.length; i++) {
@@ -181,7 +180,7 @@
             document.querySelectorAll(".tab-pane").forEach(value => value.classList.remove("hide"));
             document.querySelectorAll(".tab-pane.active").forEach(value => value.classList.add("show"));
 
-            if (listSearch){
+            if (listSearch) {
                 listSearch.remove();
             }
 
@@ -196,21 +195,43 @@
             let valueSearch = document.querySelector("#searchTask").value;
             var findTask = TaskForm.Tasks.slice().find(value => value === valueSearch);
             let tabDate = TaskForm.TabDate();
-            let template = `<div class="searchList"><li class="list-group-item list-group-item-light"><a>${findTask}</a></li></div>`;
+            let template = `<div class="searchList"><li class="list-group-item list-group-item-light" data-name="${findTask}"><a>${findTask}</a></li></div>`;
+            // let compareReg = template.match(`${findTask}`)[0];
+
 
             document.querySelector(".AddTask").style.display = "none";
             tabDate.tabContainer.querySelectorAll(".tab-pane.active").forEach(value => value.classList.add("hide"));
 
-            if (findTask !== undefined){
+
+            if (findTask !== undefined) {
+                if (tabDate.tabContainer.querySelector(".searchList") !== null){
+                    tabDate.tabContainer.querySelector(".searchList").innerHTML = "";
+                }
                 tabDate.tabContainer.insertAdjacentHTML("afterbegin", template);
+                TaskForm.isFind = true;
+            } else {
+                tabDate.tabContainer.querySelector(".searchList").innerHTML = "";
+
+                setTimeout(function () {
+                    const alert = document.createElement("div");
+                    alert.classList.add("alert");
+                    alert.classList.add("alert-danger");
+                    alert.innerText = "Task not found!";
+                    document.querySelector(".tab-content .searchList").insertAdjacentElement("afterbegin", alert);
+                }, 500);
+                setTimeout(function () {
+                    document.querySelector(".alert.alert-danger").remove();
+                }, 5000)
             }
+
             document.querySelector(".categoriesName").innerHTML = "Found tasks";
             searchForm.reset();
-        }
+        },
     };
 
 
-    document.querySelector(".input-group-append").addEventListener("click",TaskForm.findTask);
+    document.querySelector(".input-group-append").addEventListener("click", TaskForm.findTask);
+
 
     window.addEventListener("load", TaskForm.getTasks);
     createListForm.addEventListener("submit", TaskForm.createCategory);
