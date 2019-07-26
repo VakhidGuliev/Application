@@ -196,6 +196,7 @@
             var findTask = TaskForm.Tasks.slice().find(value => value === valueSearch);
             let tabDate = TaskForm.TabDate();
             let template = `<div class="searchList"><li class="list-group-item list-group-item-light" data-name="${findTask}"><a>${findTask}</a></li></div>`;
+            var searchList = tabDate.tabContainer.querySelector(".searchList");
             // let compareReg = template.match(`${findTask}`)[0];
 
 
@@ -204,24 +205,26 @@
 
 
             if (findTask !== undefined) {
-                if (tabDate.tabContainer.querySelector(".searchList") !== null){
-                    tabDate.tabContainer.querySelector(".searchList").innerHTML = "";
+                if (searchList !== null) {
+                    searchList.innerHTML = "";
                 }
                 tabDate.tabContainer.insertAdjacentHTML("afterbegin", template);
-                TaskForm.isFind = true;
             } else {
-                tabDate.tabContainer.querySelector(".searchList").innerHTML = "";
-
+                if (searchList !== null) {
+                    searchList.innerHTML = "";
+                }
                 setTimeout(function () {
                     const alert = document.createElement("div");
                     alert.classList.add("alert");
                     alert.classList.add("alert-danger");
                     alert.innerText = "Task not found!";
-                    document.querySelector(".tab-content .searchList").insertAdjacentElement("afterbegin", alert);
+
+                    document.querySelector(".tab-content").insertAdjacentElement("afterbegin", alert);
                 }, 500);
                 setTimeout(function () {
                     document.querySelector(".alert.alert-danger").remove();
-                }, 5000)
+                }, 2000)
+
             }
 
             document.querySelector(".categoriesName").innerHTML = "Found tasks";
