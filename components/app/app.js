@@ -1,13 +1,33 @@
 "use strict";
 (function () {
+
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyDqclOHPqTzVU3cmqryDJ7YGuCbYNRNGtk",
+        authDomain: "application-c0501.firebaseapp.com",
+        databaseURL: "https://application-c0501.firebaseio.com",
+        projectId: "application-c0501",
+        storageBucket: "application-c0501.appspot.com",
+        messagingSenderId: "53230773832",
+        appId: "1:53230773832:web:87f8de8c0d4bdfce"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    var database = firebase.database();
+
+
     var form = document.forms.namedItem("task");
     var searchForm = document.forms.namedItem("search_form");
     var createListForm = document.forms.namedItem("createListForm");
     var listGroup = document.querySelector('.list-group');
 
+
     var TaskForm = {
         jsonIsLoaded: false,
         Tasks: [],
+        keys: [],
+        taskKeys: [],
         isFind: false,
 
         date: function () {
@@ -15,7 +35,7 @@
                 name: form.elements.namedItem("name").value,
                 categoryName: TaskForm.getCategoryName(),
                 Date: new Date().toLocaleDateString(),
-                Time: new Date().toLocaleTimeString()
+                Time: new Date().toLocaleTimeString(),
             };
 
             return formData;
@@ -126,12 +146,15 @@
                 document.querySelector("#myList").innerHTML = "";
                 document.querySelector(".tab-content").innerHTML = "";
 
+
                 //rendering
                 var TaskListKeys = Object.keys(dataTask);
                 TaskListKeys.forEach((value, index, array) => {
                     let dateTab = TaskForm.TabDate();
 
                     array = arr;
+
+                    TaskForm.keys.unshift(array[index].keys);
 
                     dateTab.listContainer.insertAdjacentHTML("afterbegin", dateTab.renderLists(value, index, array[index].tasksCount));
                     dateTab.tabContainer.insertAdjacentHTML("afterbegin", dateTab.renderTabs(value, index));
@@ -145,11 +168,26 @@
                     document.querySelector(".categoriesName").innerHTML = value;
                 });
 
+
+                for (let i = 0; i < TaskForm.keys.length; i++) {
+                    var categoryKey = TaskForm.keys[i];
+                    for (let j = 0; j < categoryKey.length; j++) {
+                        TaskForm.taskKeys.push(categoryKey[j])
+                    }
+                }
+
+
                 for (let i = 0; i < arr.length; i++) {
                     var taskObjects = arr[i];
 
                     for (var key in taskObjects) {
-                        var template = `<li class="list-group-item list-group-item-light"><a>${taskObjects[key].name}</a></li>`;
+                        var template = `<li class="list-group-item list-group-item-light">
+                            <span>
+                               <input type="checkbox" style="width: auto">
+                               <a>${taskObjects[key].name}</a>
+                            </span>
+                               <span class="deleteTask"><i class="fa fa-trash btn_delete" aria-hidden="true"></i></span>
+                            </li>`;
                         document.querySelectorAll(`.tab-content .tab-pane`).forEach(item => {
                             if (item.dataset.name === `${taskObjects[key].categoryName}`) {
                                 item.insertAdjacentHTML("beforeend", template);
@@ -158,6 +196,11 @@
                         });
                     }
                 }
+                document.querySelectorAll(".list-group-item.list-group-item-light").forEach((value, key1, parent) => {
+                    value.setAttribute("data-key", `${TaskForm.taskKeys[key1]}`)
+                })
+
+
             }).catch(e => {
                 console.log(e.message)
             });
@@ -230,16 +273,33 @@
             document.querySelector(".categoriesName").innerHTML = "Found tasks";
             searchForm.reset();
         },
+        deleteTask: function (e) {
+            if (e.target.classList.contains("btn_delete")) {
+                //delete task
+                var date = TaskForm.date();
+                var taskId = e.target.parentElement.parentElement.getAttribute("data-key");
+                var firebaseRef = database.ref("/Tasks").child(`${date.categoryName}`).child(`${taskId}`);
+                firebaseRef.remove().then(function () {
+                    console.log("removed");
+                    // setTimeout(function () {
+                    //     TaskForm.getTasks();
+                    // },1000)
+                }).catch(function (e) {
+                    console.log(e.message);
+                })
+            }
+        }
     };
 
 
     document.querySelector(".input-group-append").addEventListener("click", TaskForm.findTask);
 
-
     window.addEventListener("load", TaskForm.getTasks);
     createListForm.addEventListener("submit", TaskForm.createCategory);
     listGroup.addEventListener('click', TaskForm.showTab);
     form.addEventListener("submit", TaskForm.createTask);
+
+    document.querySelector(".tab-content").addEventListener("click", TaskForm.deleteTask);
 
 
 })();
