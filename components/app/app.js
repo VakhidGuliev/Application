@@ -26,8 +26,6 @@
     var TaskForm = {
         jsonIsLoaded: false,
         Tasks: [],
-        keys: [],
-        taskKeys: [],
         isFind: false,
 
         date: function () {
@@ -78,6 +76,7 @@
                 await add(date, `/Tasks/${date.categoryName}.json`);
 
                 form.reset();
+
                 await TaskForm.getTasks();
 
                 setTimeout(function () {
@@ -154,8 +153,6 @@
 
                     array = arr;
 
-                    TaskForm.keys.unshift(array[index].keys);
-
                     dateTab.listContainer.insertAdjacentHTML("afterbegin", dateTab.renderLists(value, index, array[index].tasksCount));
                     dateTab.tabContainer.insertAdjacentHTML("afterbegin", dateTab.renderTabs(value, index));
 
@@ -169,38 +166,34 @@
                 });
 
 
-                for (let i = 0; i < TaskForm.keys.length; i++) {
-                    var categoryKey = TaskForm.keys[i];
-                    for (let j = 0; j < categoryKey.length; j++) {
-                        TaskForm.taskKeys.push(categoryKey[j])
-                    }
-                }
-
-
                 for (let i = 0; i < arr.length; i++) {
                     var taskObjects = arr[i];
 
+
                     for (var key in taskObjects) {
-                        var template = `<li class="list-group-item list-group-item-light">
-                            <span>
-                               <input type="checkbox" style="width: auto">
-                               <a>${taskObjects[key].name}</a>
-                            </span>
-                               <span class="deleteTask"><i class="fa fa-trash btn_delete" aria-hidden="true"></i></span>
-                            </li>`;
-                        document.querySelectorAll(`.tab-content .tab-pane`).forEach(item => {
+
+                        document.querySelectorAll(`.tab-content .tab-pane`).forEach((item) => {
                             if (item.dataset.name === `${taskObjects[key].categoryName}`) {
+
+                                var template = `<li class="list-group-item list-group-item-light">
+                                    <span>
+                                       <input type="checkbox" style="width: auto">
+                                       <a>${taskObjects[key].name}</a>
+                                    </span>
+                                       <span class="deleteTask"><i class="fa fa-trash btn_delete" aria-hidden="true"></i></span>
+                                    </li>`;
+
                                 item.insertAdjacentHTML("beforeend", template);
+
+                                document.querySelectorAll(".list-group-item.list-group-item-light").forEach((li, idx) => {
+                                    li.setAttribute("data-key", `${taskObjects.keys[idx]}`)
+                                });
+
                                 TaskForm.Tasks.push(taskObjects[key].name);
                             }
                         });
                     }
                 }
-                document.querySelectorAll(".list-group-item.list-group-item-light").forEach((value, key1, parent) => {
-                    value.setAttribute("data-key", `${TaskForm.taskKeys[key1]}`)
-                })
-
-
             }).catch(e => {
                 console.log(e.message)
             });
@@ -281,9 +274,8 @@
                 var firebaseRef = database.ref("/Tasks").child(`${date.categoryName}`).child(`${taskId}`);
                 firebaseRef.remove().then(function () {
                     console.log("removed");
-                    // setTimeout(function () {
-                    //     TaskForm.getTasks();
-                    // },1000)
+                    TaskForm.getTasks();
+
                 }).catch(function (e) {
                     console.log(e.message);
                 })
