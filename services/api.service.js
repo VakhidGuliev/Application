@@ -11,7 +11,7 @@ async function add(post,addres) {
       const response = await fetch(request);
       return await response.json();
     } catch (error) {
-      console.error(error)
+      console.error(error.message)
     }
 }
 
