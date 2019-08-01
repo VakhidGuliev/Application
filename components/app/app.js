@@ -1,8 +1,5 @@
 "use strict";
 
-
-"use strict";
-
 function fireBaseInit() {
     // Your web app's Firebase configuration
     const firebaseConfig = {
@@ -17,20 +14,41 @@ function fireBaseInit() {
 // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 }
+
 fireBaseInit();
 
-
+const auth = firebase.auth();
 var database = firebase.database();
 var ref = database.ref("Tasks");
+
+
+auth.onAuthStateChanged(function (user) {
+    if (user) {
+        // User is signed in.
+        document.querySelector(".user-name").innerHTML = user.email;
+        // ...
+    } else {
+        // User is signed out.
+        document.querySelector(".user-name").innerHTML = "";
+        const authUrl = "../auth/auth.html";
+        window.open(authUrl,"_self");
+    }
+});
+
+var signOut = document.querySelector("#signOut");
+signOut.addEventListener("click", e=> {
+   auth.signOut().then(response=> console.log(response)).catch(e=> console.log(e.message))
+});
+
+
 
 var taskForm = document.forms.namedItem("task");
 var createListForm = document.forms.namedItem("createListForm");
 var searchForm = document.forms.namedItem("search_form");
-
 var listGroup = document.querySelector('.list-group');
 
 var Task = {
-    taskNames : [],
+    taskNames: [],
     formData: function () {
         return {
             name: taskForm.elements.namedItem("name").value,
@@ -143,7 +161,7 @@ var Task = {
             console.log(e.message)
         });
     },
-    findTask: function(){
+    findTask: function () {
 
         let valueSearch = document.querySelector("#searchTask").value;
         var findTask = Task.taskNames.slice().find(value => value === valueSearch);
@@ -188,7 +206,7 @@ var Task = {
             var taskId = e.target.parentElement.parentElement.getAttribute("data-key");
 
             var firebaseRef = database.ref("/Tasks").child(`${formData.parentCategory}`).child(`${taskId}`);
-            firebaseRef.remove().then(value=> value).catch(e=> console.log(e.message))
+            firebaseRef.remove().then(value => value).catch(e => console.log(e.message))
         }
     },
     createCategory: function (e) {
@@ -264,10 +282,11 @@ var Task = {
     },
 };
 
+
 //listeners
 ref.on("value", Task.getTask);
 listGroup.addEventListener("click", Task.showTab);
 createListForm.addEventListener("submit", Task.createCategory);
 taskForm.addEventListener("submit", Task.addTask);
 document.querySelector(".input-group-append").addEventListener("click", Task.findTask);
-document.querySelector(".tab-content").addEventListener("click",Task.deleteTask);
+document.querySelector(".tab-content").addEventListener("click", Task.deleteTask);
