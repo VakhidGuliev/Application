@@ -18,20 +18,74 @@ function fireBaseInit() {
 fireBaseInit();
 
 const auth = firebase.auth();
-var database = firebase.database();
-var ref = database.ref("Tasks");
-
+const database = firebase.database();
 
 auth.onAuthStateChanged(function (user) {
     if (user) {
         // User is signed in.
+        userId.push(user.uid);
         document.querySelector(".user-name").innerHTML = user.email;
-        // ...
+        let ref = database.ref(`Users/${user.uid}/Tasks`);
+        ref.on("value",getTask);
+
+        function getTask(data) {
+            var Tab = Task.Tabs();
+            var TaskObject = data.val();
+            var promise = fbTransformToArray(TaskObject);
+
+            promise.then(function (arr) {
+                let objectKeys = Object.keys(TaskObject);
+
+                //Update database
+                document.querySelector("#myList").innerHTML = "";
+                document.querySelector(".tab-content").innerHTML = "";
+
+                objectKeys.forEach((value, index, array) => {
+                    array = arr;
+
+                    Tab.listContainer.insertAdjacentHTML("beforeend", Tab.renderLists(value, index, array[index].tasksCount));
+                    Tab.tabContainer.insertAdjacentHTML("beforeend", Tab.renderTabs(value, index));
+
+                    Tab.listContainer.querySelectorAll("a").forEach(value => value.classList.remove("active"));
+                    Tab.tabContainer.querySelectorAll(".tab-pane").forEach(value => value.classList.remove("active"));
+
+                    document.querySelector("#myList a:first-child").classList.add("active");
+                    document.querySelector(".tab-content .tab-pane:first-child").classList.add("active");
+
+                    document.querySelector(".categoriesName").innerHTML = array[0].categoryName;
+                });
+
+
+                for (let categoriesKey in TaskObject) {
+
+                    let category = TaskObject[categoriesKey];
+
+                    for (let tasksKey in category) {
+                        let task = category[tasksKey];
+
+                        document.querySelectorAll(`.tab-content .tab-pane`).forEach((value, key, parent) => {
+                            if (value.dataset.name === `${task.parentCategory}`) {
+                                key = tasksKey;
+                                var template = `<li class="list-group-item list-group-item-light" data-key="${key}">
+                                        <span>
+                                           <input type="checkbox" style="width: auto">
+                                           <a>${task.name}</a>
+                                        </span>
+                                           <span class="deleteTask"><i class="fa fa-trash btn_delete" aria-hidden="true"></i></span>
+                                        </li>`;
+                                value.insertAdjacentHTML("beforeend", template);
+                                Task.taskNames.push(task.name);
+                            }
+                        });
+                    }
+                }
+            }).catch(function (e) {
+                console.log(e.message)
+            });
+        }
     } else {
         // User is signed out.
-        document.querySelector(".user-name").innerHTML = "";
-        const authUrl = "../auth/auth.html";
-        window.open(authUrl,"_self");
+        window.open("../auth/auth.html","_self");
     }
 });
 
@@ -46,6 +100,8 @@ var taskForm = document.forms.namedItem("task");
 var createListForm = document.forms.namedItem("createListForm");
 var searchForm = document.forms.namedItem("search_form");
 var listGroup = document.querySelector('.list-group');
+
+const userId = [];
 
 var Task = {
     taskNames: [],
@@ -89,6 +145,8 @@ var Task = {
 
         let formDate = Task.formData();
         let Tab = Task.Tabs();
+        let ref = database.ref(`Users/${userId[0]}/Tasks`);
+
 
         if (Tab.listContainer.children.length !== 0 && formDate.name.trim() !== "") {
             ref.child(`${formDate.parentCategory}`).push(formDate);
@@ -107,59 +165,6 @@ var Task = {
             }, 2000)
         }
         return false;
-    },
-    getTask: function (data) {
-        var Tab = Task.Tabs();
-        var TaskObject = data.val();
-        var promise = fbTransformToArray(TaskObject);
-
-        promise.then(function (arr) {
-            var objectKeys = Object.keys(TaskObject);
-
-            //Update database
-            document.querySelector("#myList").innerHTML = "";
-            document.querySelector(".tab-content").innerHTML = "";
-
-            objectKeys.forEach((value, index, array) => {
-                array = arr;
-
-                Tab.listContainer.insertAdjacentHTML("beforeend", Tab.renderLists(value, index, array[index].tasksCount));
-                Tab.tabContainer.insertAdjacentHTML("beforeend", Tab.renderTabs(value, index));
-
-                Tab.listContainer.querySelectorAll("a").forEach(value => value.classList.remove("active"));
-                Tab.tabContainer.querySelectorAll(".tab-pane").forEach(value => value.classList.remove("active"));
-
-                document.querySelector("#myList a:first-child").classList.add("active");
-                document.querySelector(".tab-content .tab-pane:first-child").classList.add("active");
-
-                document.querySelector(".categoriesName").innerHTML = array[0].categoryName;
-            });
-
-            for (var categoriesKey in TaskObject) {
-                var category = TaskObject[categoriesKey];
-
-                for (var tasksKey in category) {
-                    var task = category[tasksKey];
-
-                    document.querySelectorAll(`.tab-content .tab-pane`).forEach((value, key, parent) => {
-                        if (value.dataset.name === `${task.parentCategory}`) {
-                            key = tasksKey;
-                            var template = `<li class="list-group-item list-group-item-light" data-key="${key}">
-                                    <span>
-                                       <input type="checkbox" style="width: auto">
-                                       <a>${task.name}</a>
-                                    </span>
-                                       <span class="deleteTask"><i class="fa fa-trash btn_delete" aria-hidden="true"></i></span>
-                                    </li>`;
-                            value.insertAdjacentHTML("beforeend", template);
-                            Task.taskNames.push(task.name);
-                        }
-                    });
-                }
-            }
-        }).catch(function (e) {
-            console.log(e.message)
-        });
     },
     findTask: function () {
 
@@ -205,8 +210,8 @@ var Task = {
             var formData = Task.formData();
             var taskId = e.target.parentElement.parentElement.getAttribute("data-key");
 
-            var firebaseRef = database.ref("/Tasks").child(`${formData.parentCategory}`).child(`${taskId}`);
-            firebaseRef.remove().then(value => value).catch(e => console.log(e.message))
+            let ref = database.ref(`Users/${userId}/Tasks`).child(`${formData.parentCategory}`).child(`${taskId}`);
+            ref.remove().then(value => value).catch(e => console.log(e.message))
         }
     },
     createCategory: function (e) {
@@ -215,8 +220,9 @@ var Task = {
         let category = {
             categoryName: document.querySelector("#creatList").value.toString().trim(),
         };
-        ref.child(`${category.categoryName}`).set(category).then(response => response);
 
+        let ref = database.ref(`Users/${userId[0]}/Tasks`);
+        ref.child(`${category.categoryName}`).set(category).then(response => response);
 
         let categoryName = document.querySelector("#creatList");
         let tabNameLength = document.querySelector(`.tab-content .tab-pane[id="${category.categoryName}"]`);
@@ -284,7 +290,7 @@ var Task = {
 
 
 //listeners
-ref.on("value", Task.getTask);
+// ref.on("value", Task.getTask);
 listGroup.addEventListener("click", Task.showTab);
 createListForm.addEventListener("submit", Task.createCategory);
 taskForm.addEventListener("submit", Task.addTask);

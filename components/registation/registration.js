@@ -13,20 +13,22 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+var database = firebase.database();
+
 
 var formRegistration = document.forms.namedItem("registration");
 
 var FormRegistration = {
 
-    date: function (){
-       var formData  = {
+    date: function () {
+        var formData = {
             firstName: formRegistration.querySelector("#first_name").value,
-                lastName: formRegistration.querySelector("#last_name").value,
-                birthDay: formRegistration.querySelector("#birthday").value,
-                email: formRegistration.querySelector("#email").value,
-                phoneNumber: formRegistration.querySelector("#phone").value,
-                password: formRegistration.querySelector("#password").value,
-                confirmPassword: formRegistration.querySelector("#confirmPassword").value
+            lastName: formRegistration.querySelector("#last_name").value,
+            birthDay: formRegistration.querySelector("#birthday").value,
+            email: formRegistration.querySelector("#email").value,
+            phoneNumber: formRegistration.querySelector("#phone").value,
+            password: formRegistration.querySelector("#password").value,
+            confirmPassword: formRegistration.querySelector("#confirmPassword").value,
         };
 
         return formData;
@@ -55,7 +57,6 @@ var FormRegistration = {
         }
 
 
-
     },
     addUser: async function (event) {
         var date = FormRegistration.date();
@@ -66,15 +67,20 @@ var FormRegistration = {
 
         event.preventDefault();
 
-
         user.createUserWithEmailAndPassword(date.email, date.password)
-            .then(function () {
-                window.open(URL, "_self");
-            }).catch(function (error) {
-            console.log(error);
-        });
-
-        await add(date,"/users.json");
+            .then(function (cred) {
+                const userId = cred.user.uid;
+                return database.ref(`Users/${userId}/userInfo`).set({
+                    username: date.firstName,
+                    birthday: date.birthDay,
+                    email: date.email,
+                    password: date.password,
+                    phone: date.phoneNumber,
+                    id: userId
+                }).then(() => {
+                    window.open(URL, "_self");
+                }).catch((e)=> console.log(e.message));
+            }).catch((e)=> console.log(e.message));
     }
 };
 
