@@ -34,7 +34,6 @@ label{
 
 .menu-block{
     background-color: #e4e1be26;
-    border-right: 1px solid #3a70ae;
 }
 .listName{
     margin-left: 5px;
@@ -43,8 +42,8 @@ label{
 }
 .list-group-item.active{
     color: #fff !important;
-    background-color: #343a40;
-    border-color: #343a40;
+    background-color: #78addd;
+    border-color: #78addd;
 }
 
 .search-block{

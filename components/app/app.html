@@ -18,52 +18,31 @@
 
 <header>
     <!--Navbar -->
-    <nav class="mb-1 navbar navbar-expand-lg navbar-dark secondary-color lighten-1" style="margin-bottom: 0 !important;border-bottom: 2px solid #3c6fae;">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
-                aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-dark info-color">
+        <a class="navbar-brand" href="#">TaskManager</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4"
+                aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
-            <ul class="navbar-nav mr-auto">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-facebook-f"></i> Facebook
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-instagram"></i> Instagram</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">Dropdown
-                    </a>
-                    <div class="dropdown-menu dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-555">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto nav-flex-icons">
-                <li class="nav-item">
-                    <a class="nav-link waves-effect waves-light">1
-                        <i class="fa fa-envelope"></i>
-                    </a>
-                </li>
-                <li class="nav-item avatar dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <img src="https://pp.userapi.com/c849216/v849216580/9a271/phgXt3xKB84.jpg" class="avatar rounded-circle z-depth-0"
-                             alt="avatar image">
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                         aria-labelledby="navbarDropdownMenuLink-55">
-                        <a class="dropdown-item" href="#">Account</a>
-                        <a class="dropdown-item" id="signOut" href="#">Sign Out</a>
+                        <i class="fa fa-user"></i> Profile </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+                        <a class="dropdown-item" data-toggle="modal" data-target="#centralModalSm" href="#">My account</a>
+                        <a class="dropdown-item" id="signOut" href="#">Log out</a>
                     </div>
                 </li>
             </ul>
@@ -143,6 +122,48 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- modal account form -->
+<div class="modal fade" id="centralModalSm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Change class .modal-sm to change the size of the modal -->
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">My account</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" name="Account">
+                    <div class="form-group d-flex justify-content-md-around">
+                        <label for="account_name">User name
+                            <input class="form-control" type="text" name="account_name" id="account_name">
+                        </label>
+                        <label for="account_name">email
+                            <input class="form-control" type="text" name="account_email" id="account_email">
+                        </label>
+                    </div>
+                    <div class="form-group d-flex justify-content-md-around">
+                        <label for="account_password">Password
+                            <input class="form-control" type="text" id="account_password" name="account_password">
+                        </label>
+                        <label for="account_phone">Phone number
+                            <input class="form-control" type="text" id="account_phone" name="account_phone">
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal account form -->
 
 <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-database.js"></script>

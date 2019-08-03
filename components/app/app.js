@@ -24,6 +24,11 @@ auth.onAuthStateChanged(function (user) {
     if (user) {
         // User is signed in.
         userId.push(user.uid);
+
+        let userInfo = database.ref(`Users/${user.uid}/userInfo`);
+
+        console.log(userInfo);
+
         document.querySelector(".user-name").innerHTML = user.email;
         let ref = database.ref(`Users/${user.uid}/Tasks`);
         ref.on("value",getTask);
