@@ -27,7 +27,6 @@ auth.onAuthStateChanged(function (user) {
 
         let userInfo = database.ref(`Users/${user.uid}/userInfo`);
 
-        console.log(userInfo);
 
         document.querySelector(".user-name").innerHTML = user.email;
         let ref = database.ref(`Users/${user.uid}/Tasks`);
@@ -71,13 +70,9 @@ auth.onAuthStateChanged(function (user) {
                         document.querySelectorAll(`.tab-content .tab-pane`).forEach((value, key, parent) => {
                             if (value.dataset.name === `${task.parentCategory}`) {
                                 key = tasksKey;
-                                var template = `<li class="list-group-item list-group-item-light" data-key="${key}">
-                                        <span>
-                                           <input type="checkbox" style="width: auto">
-                                           <a>${task.name}</a>
-                                        </span>
-                                           <span class="deleteTask"><i class="fa fa-trash btn_delete" aria-hidden="true"></i></span>
-                                        </li>`;
+                                var template = `
+                                    <li class="task-item list-group-item list-group-item-light" data-value="${task.name}" data-key="${key}">${task.name}</li>`;
+
                                 value.insertAdjacentHTML("beforeend", template);
                                 Task.taskNames.push(task.name);
                             }
@@ -102,9 +97,11 @@ signOut.addEventListener("click", e=> {
 
 
 var taskForm = document.forms.namedItem("task");
+var editTaskForm = document.forms.namedItem("EditTask");
 var createListForm = document.forms.namedItem("createListForm");
 var searchForm = document.forms.namedItem("search_form");
 var listGroup = document.querySelector('.list-group');
+var tabContent = document.querySelector(".tab-content");
 
 const userId = [];
 
@@ -212,6 +209,7 @@ var Task = {
     },
     deleteTask: function (e) {
         if (e.target.classList.contains("btn_delete")) {
+            e.stopPropagation();
             var formData = Task.formData();
             var taskId = e.target.parentElement.parentElement.getAttribute("data-key");
 
@@ -291,13 +289,42 @@ var Task = {
         document.querySelector(".categoriesName").innerHTML = linkName;
 
     },
+    showTaskModal : function (e) {
+        let taskName = document.querySelector("#taskName");
+        let currentTaskItem = e.target;
+        let currentTaskName = currentTaskItem.getAttribute("data-value");
+        let currentTaskKey = currentTaskItem.getAttribute("data-key");
+
+        if (!currentTaskItem.classList.contains('task-item')) {
+            return;
+        }
+
+        $('#fullHeightModalRight').modal('show');
+        taskName.innerHTML = currentTaskName;
+        taskName.setAttribute("data-key",currentTaskKey);
+
+    },
+    saveTaskChanges : function (e) {
+        e.preventDefault();
+
+        let formData = Task.formData();
+        let taskKey = document.querySelector("#taskName").getAttribute("data-key");
+        let note = document.querySelector("#note").value;
+        let ref = database.ref(`Users/${userId[0]}/Tasks/${formData.parentCategory}/${taskKey}`);
+        ref.update({
+            note: note,
+        }).then(r => r);
+
+        $('#fullHeightModalRight').modal('hide');
+    }
 };
 
 
 //listeners
-// ref.on("value", Task.getTask);
 listGroup.addEventListener("click", Task.showTab);
 createListForm.addEventListener("submit", Task.createCategory);
 taskForm.addEventListener("submit", Task.addTask);
+editTaskForm.addEventListener("submit",Task.saveTaskChanges);
+tabContent.addEventListener("click",Task.showTaskModal);
 document.querySelector(".input-group-append").addEventListener("click", Task.findTask);
 document.querySelector(".tab-content").addEventListener("click", Task.deleteTask);
