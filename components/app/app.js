@@ -27,10 +27,9 @@ auth.onAuthStateChanged(function (user) {
 
         let userInfo = database.ref(`Users/${user.uid}/userInfo`);
 
-
         document.querySelector(".user-name").innerHTML = user.email;
         let ref = database.ref(`Users/${user.uid}/Tasks`);
-        ref.on("value",getTask);
+        ref.on("value", getTask);
 
         function getTask(data) {
             var Tab = Task.Tabs();
@@ -70,8 +69,11 @@ auth.onAuthStateChanged(function (user) {
                         document.querySelectorAll(`.tab-content .tab-pane`).forEach((value, key, parent) => {
                             if (value.dataset.name === `${task.parentCategory}`) {
                                 key = tasksKey;
-                                var template = `
-                                    <li class="task-item list-group-item list-group-item-light" data-value="${task.name}" data-key="${key}">${task.name}</li>`;
+                                let template = `
+                                    <li class="task-item list-group-item list-group-item-light" data-value="${task.name}" data-note="${task.note === undefined ? "" : task.note}" data-key="${key}">
+                                    <span class="task-name">${task.name}</span>
+                                    <span class="deleteTask"><i class="fa fa-trash btn_delete"></i></span>
+                                    </li>`;
 
                                 value.insertAdjacentHTML("beforeend", template);
                                 Task.taskNames.push(task.name);
@@ -85,15 +87,14 @@ auth.onAuthStateChanged(function (user) {
         }
     } else {
         // User is signed out.
-        window.open("../auth/auth.html","_self");
+        window.open("../auth/auth.html", "_self");
     }
 });
 
 var signOut = document.querySelector("#signOut");
-signOut.addEventListener("click", e=> {
-   auth.signOut().then(response=> console.log(response)).catch(e=> console.log(e.message))
+signOut.addEventListener("click", e => {
+    auth.signOut().then(response => console.log(response)).catch(e => console.log(e.message))
 });
-
 
 
 var taskForm = document.forms.namedItem("task");
@@ -121,8 +122,7 @@ var Task = {
             tabContainer: document.querySelector(".tab-content"),
             renderLists: function (list, index, array) {
                 return `<a class="list-group-item list-group-item-action" data-name="${list}" data-index="${index}" role="tab">
-                                <i class="fa fa-list-ul"></i>
-                                <span class="listName">${list}</span>
+                                <span class="listName"><i class="fa fa-list-ul"></i> ${list} </span>
                                 <span class="listCount badge badge-primary badge-pill">${array}</span>
                             </a>`
             },
@@ -171,17 +171,29 @@ var Task = {
     findTask: function () {
 
         let valueSearch = document.querySelector("#searchTask").value;
-        var findTask = Task.taskNames.slice().find(value => value === valueSearch);
+        let findTask = Task.taskNames.slice().find(value => value === valueSearch);
         let Tab = Task.Tabs();
-        let template = `<div class="searchList"><li class="list-group-item list-group-item-light" data-name="${findTask}"><a>${findTask}</a></li></div>`;
-        var searchList = Tab.tabContainer.querySelector(".searchList");
-        // let compareReg = template.match(`${findTask}`)[0];
+        let searchList = Tab.tabContainer.querySelector(".searchList");
+
 
 
         document.querySelector(".AddTask").style.display = "none";
         Tab.tabContainer.querySelectorAll(".tab-pane.active").forEach(value => value.classList.add("hide"));
 
         if (findTask !== undefined) {
+
+            let currentTaskItem = document.querySelector(`li.task-item[data-value='${findTask}']`);
+            let currentTaskName = currentTaskItem.getAttribute("data-value");
+            let currentTaskKey = currentTaskItem.getAttribute("data-key");
+            let currentTaskNote = currentTaskItem.getAttribute("data-note");
+
+            let template = `<div class="searchList">
+                            <li class="task-item list-group-item list-group-item-light" data-value="${findTask}" data-note="${currentTaskNote}" data-key="${currentTaskKey}">
+                                <span class="task-name">${currentTaskName}</span>
+                                <span class="deleteTask"><i class="fa fa-trash btn_delete"></i></span>
+                            </li>
+                        </div>`;
+
             if (searchList !== null) {
                 searchList.innerHTML = "";
             }
@@ -262,7 +274,6 @@ var Task = {
         }
     },
     showTab: function (e) {
-
         var link = e.target;
 
         if (!link.classList.contains('list-group-item')) {
@@ -287,13 +298,17 @@ var Task = {
         link.classList.add("active");
         document.querySelector(`.tab-pane[id=${linkName}]`).classList.add("active");
         document.querySelector(".categoriesName").innerHTML = linkName;
+        document.querySelector(".AddTask").style.display = "block";
+
 
     },
-    showTaskModal : function (e) {
+    showTaskModal: function (e) {
         let taskName = document.querySelector("#taskName");
+        let taskNote = document.querySelector("#note");
         let currentTaskItem = e.target;
         let currentTaskName = currentTaskItem.getAttribute("data-value");
         let currentTaskKey = currentTaskItem.getAttribute("data-key");
+        let currentTaskNote = currentTaskItem.getAttribute("data-note");
 
         if (!currentTaskItem.classList.contains('task-item')) {
             return;
@@ -301,10 +316,10 @@ var Task = {
 
         $('#fullHeightModalRight').modal('show');
         taskName.innerHTML = currentTaskName;
-        taskName.setAttribute("data-key",currentTaskKey);
-
+        taskNote.innerHTML = currentTaskNote;
+        taskName.setAttribute("data-key", currentTaskKey);
     },
-    saveTaskChanges : function (e) {
+    saveTaskChanges: function (e) {
         e.preventDefault();
 
         let formData = Task.formData();
@@ -316,6 +331,7 @@ var Task = {
         }).then(r => r);
 
         $('#fullHeightModalRight').modal('hide');
+        editTaskForm.reset();
     }
 };
 
@@ -324,7 +340,7 @@ var Task = {
 listGroup.addEventListener("click", Task.showTab);
 createListForm.addEventListener("submit", Task.createCategory);
 taskForm.addEventListener("submit", Task.addTask);
-editTaskForm.addEventListener("submit",Task.saveTaskChanges);
-tabContent.addEventListener("click",Task.showTaskModal);
+editTaskForm.addEventListener("submit", Task.saveTaskChanges);
+tabContent.addEventListener("click", Task.showTaskModal);
 document.querySelector(".input-group-append").addEventListener("click", Task.findTask);
 document.querySelector(".tab-content").addEventListener("click", Task.deleteTask);

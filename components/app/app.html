@@ -63,9 +63,9 @@
             <div class="search-block input-group md-form form-sm form-2 pl-0">
                 <form name="search_form">
                     <div class="form-group">
-                        <input class="form-control my-0 py-1 red-border" id="searchTask" type="search" placeholder="Search task" aria-label="Search">
+                        <input class="form-control my-0 py-1" id="searchTask" type="search" placeholder="Search task" aria-label="Search">
                         <div class="input-group-append">
-                            <span class="input-group-text red lighten-3" id="search_btn"><i class="fa fa-search text-grey" aria-hidden="true"></i></span>
+                            <span class="input-group-text" id="search_btn"><i class="fa fa-search text-grey" aria-hidden="true"></i></span>
                         </div>
                     </div>
                 </form>
@@ -74,9 +74,7 @@
             <div class="list-group" id="myList" role="tablist"></div>
             <hr>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#creteListModal">Create a
-                list
-            </button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#creteListModal">Create list</button>
         </div>
         <div class="col-9 main-block">
             <h1 class="categoriesName"></h1>
@@ -146,7 +144,7 @@
                     <div class="md-form amber-textarea active-amber-textarea">
                         <i class="fas fa-pencil-alt prefix"></i>
                         <textarea id="note" class="md-textarea form-control" rows="3"></textarea>
-                        <label for="note">Add a note</label>
+                        <label for="note"></label>
                     </div>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" id="save" class="btn btn-primary">Save changes</button>
@@ -172,7 +170,6 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.7/js/mdb.min.js"></script>
 
 
-<!--<script src="app.js"></script>-->
 <script src="app.js"></script>
 <script src="../../services/api.service.js"></script>
 <script src="../../services/transformService.js"></script>

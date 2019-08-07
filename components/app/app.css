@@ -38,12 +38,11 @@ label{
 .listName{
     margin-left: 5px;
     display: inline-block;
-    width: 160px;
 }
 .list-group-item.active{
     color: #fff !important;
-    background-color: #78addd;
-    border-color: #78addd;
+    background-color: #33b5e5 !important;
+    border-color: #33b5e5 !important;
 }
 
 .search-block{
@@ -89,11 +88,30 @@ li.list-group-item.list-group-item-light {
     display: flex;
     justify-content: space-between;
 }
+span.task-name {
+    font-size: 20px;
+}
 
 span.deleteTask {
     cursor: pointer;
+    display: flex;
+    align-self: center;
+}
+
+span#search_btn {
+    background-color: #33b5e5;
+}
+
+span.listCount {
+    height:20px;
 }
 
 i.fa.fa-trash {
     color: red;
+    font-size: 20px;
+}
+
+.list-group a{
+    display: flex;
+    justify-content: space-between;
 }
