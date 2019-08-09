@@ -7,6 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Application</title>
     <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="../../files/default.date.css">
+    <link rel="stylesheet" href="../../files/default.time.css">
+    <link rel="stylesheet" href="../../files/classic.css">
+
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -20,23 +24,13 @@
 <header>
     <!--Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark info-color">
-        <a class="navbar-brand" href="#">TaskManager</a>
+        <a class="navbar-brand" href="#">Task Manager</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4"
                 aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">
-                        <i class="fab fa-facebook-f"></i> Facebook
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fab fa-instagram"></i> Instagram</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
@@ -64,7 +58,7 @@
                 <form name="search_form">
                     <div class="form-group">
                         <input class="form-control my-0 py-1" id="searchTask" type="search" placeholder="Search task" aria-label="Search">
-                        <div class="input-group-append">
+                        <div class="input-group-append findTask">
                             <span class="input-group-text" id="search_btn"><i class="fa fa-search text-grey" aria-hidden="true"></i></span>
                         </div>
                     </div>
@@ -74,7 +68,7 @@
             <div class="list-group" id="myList" role="tablist"></div>
             <hr>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#creteListModal">Create list</button>
+            <button type="button" id="showCreateList" class="btn btn-primary">Create list</button>
         </div>
         <div class="col-9 main-block">
             <h1 class="categoriesName"></h1>
@@ -89,30 +83,31 @@
                     </div>
                 </form>
             </div>
+
             <!-- Tab content -->
             <div class="tab-content"></div>
-            <!-- Modal -->
-            <div class="modal fade" id="creteListModal" tabindex="-1" role="dialog"
-                 aria-labelledby="creteListModalTitle" aria-hidden="true">
+
+            <!-- creteListModal -->
+            <div class="modal fade" id="ListModal" tabindex="-1" role="dialog"
+                 aria-labelledby="ListModal" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="creteListModalLongTitle">Create new list</h5>
+                            <h5 class="modal-title" id="ListModalTitle"></h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form name="createListForm">
+                            <form id="ListForm" name="">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="creatList" placeholder="create a list">
+                                    <input type="text" class="form-control listName" id="" placeholder="List Name">
                                     <span class="invalid-feedback">
                                         please enter correct name.
                                     </span>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" id="btnCreateList" class="btn btn-primary">Save</button>
+                                    <div class="buttons"></div>
                                 </div>
                             </form>
                         </div>
@@ -134,21 +129,41 @@
 
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title w-100" id="taskName"></h4>
+                <h4 class="modal-title">Edit Task</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form method="post" name="EditTask">
+                    <div class="md-form input-group input-group-lg">
+                        <input type="checkbox" class="isMarked" title="Mark as completed">
+                        <input type="text" value="" style="width: 90%" id="taskName" name="taskName" aria-label="Sizing example input" aria-describedby="inputGroupMaterial-sizing-sm">
+                    </div>
                     <div class="md-form amber-textarea active-amber-textarea">
                         <i class="fas fa-pencil-alt prefix"></i>
                         <textarea id="note" class="md-textarea form-control" rows="3"></textarea>
                         <label for="note"></label>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="save" class="btn btn-primary">Save changes</button>
+                    <div class="md-form">
+                        <input placeholder="Selected date" type="text" id="date-picker" class="form-control datepicker">
+                        <input placeholder="Selected time" type="text" id="input_starttime" class="form-control timepicker">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                   aria-describedby="inputGroupFileAddon01">
+                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                        </div>
+                    </div>
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" id="save" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -169,12 +184,20 @@
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.7/js/mdb.min.js"></script>
 
-
 <script src="app.js"></script>
 <script src="../../services/api.service.js"></script>
 <script src="../../services/transformService.js"></script>
+<script src="../../files/legacy.js"></script>
+<script src="../../files/picker.js"></script>
+<script src="../../files/picker.date.js"></script>
+<script src="../../files/picker.time.js"></script>
 
-
+<script>
+    $(document).ready(function () {
+        $("#date-picker").pickadate();
+        $('#input_starttime').pickatime()
+    })
+</script>
 
 </body>
 </html>

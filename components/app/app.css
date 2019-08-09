@@ -1,11 +1,33 @@
+@font-face {
+    font-family: 'Web font';
+    src: url('../../fonts/fa-solid-900.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 input{
     width: 100%;
 }
+input[type=checkbox]{
+    cursor: pointer;
+}
+input.isMarked {
+    width: 30px;
+    height: 20px;
+    position: relative;
+    top: 5px;
+    left: -5px;
+}
+
 .user-menu{
     text-align: left;
     padding: 0 20px;
     padding-top: 10px;
     color: #fff;
+}
+button {
+    padding: .375rem .75rem !important;
 }
 
 ul{
@@ -35,10 +57,11 @@ label{
 .menu-block{
     background-color: #e4e1be26;
 }
-.listName{
-    margin-left: 5px;
-    display: inline-block;
+span.listName {
+    width: 170px;
+    pointer-events: none;
 }
+
 .list-group-item.active{
     color: #fff !important;
     background-color: #33b5e5 !important;
@@ -86,32 +109,37 @@ form[name="search_form"]{
 
 li.list-group-item.list-group-item-light {
     display: flex;
-    justify-content: space-between;
 }
+li.task-item{
+    cursor: pointer;
+}
+
 span.task-name {
     font-size: 20px;
+    cursor: pointer;
 }
 
 span.deleteTask {
     cursor: pointer;
-    display: flex;
     align-self: center;
+    position: absolute;
+    display: block;
+    right: 10px;
 }
 
 span#search_btn {
     background-color: #33b5e5;
 }
 
-span.listCount {
-    height:20px;
-}
 
 i.fa.fa-trash {
     color: red;
     font-size: 20px;
 }
 
-.list-group a{
+a.list-group-item {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
+
