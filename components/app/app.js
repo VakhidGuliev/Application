@@ -69,7 +69,7 @@ auth.onAuthStateChanged(function (user) {
                             if (value.dataset.name === `${task.parentCategory}`) {
                                 key = tasksKey;
                                 let template = `
-                                    <li class="task-item list-group-item list-group-item-light" data-value="${task.name}" data-note="${task.note === undefined ? "" : task.note}" data-key="${key}">
+                                    <li class="task-item list-group-item list-group-item-light" data-value="${task.name}" data-date="${task.Date}" data-time="${task.Time}" data-note="${task.note === undefined ? "" : task.note}" data-key="${key}">
                                     <input type="checkbox" class="isMarked" title="Mark as completed">
                                     <span class="task-name" title="Edit Task">${task.name}</span>
                                     <span class="deleteTask" title="Delete Task"><i class="fa fa-trash btn_delete"></i></span>
@@ -174,7 +174,7 @@ var Task = {
             categoryName.classList.remove("is-invalid");
             categoryName.classList.add("is-valid");
 
-            ListForm.reset();
+            listForm.reset();
 
             $('#ListModal').modal('hide');
         } else {
@@ -249,16 +249,23 @@ var Task = {
 
         let formData = Task.formData();
         let taskKey = document.querySelector("#taskName").getAttribute("data-key");
+
         let note = document.querySelector("#note").value;
         let taskName = document.querySelector("#taskName").value;
+        let time = document.querySelector("#input_starttime").value;
+        let date = document.querySelector("#date-picker").value;
+
         let ref = database.ref(`Users/${userId[0]}/Tasks/${formData.parentCategory}/${taskKey}`);
         ref.update({
             name: taskName,
             note: note,
-        }).then(r => r);
+            Date: date,
+            Time: time
+        }).then(r => r).catch(e=> console.log(e.message));
 
         $('#fullHeightModalRight').modal('hide');
         editTaskForm.reset();
+
     },
     findTask: function (e) {
 
@@ -370,10 +377,15 @@ var Task = {
     showTaskModal: function (e) {
         let taskName = document.querySelector("#taskName");
         let taskNote = document.querySelector("#note");
+        let taskDate = document.querySelector("#date-picker");
+        let taskTime = document.querySelector("#input_starttime");
+
         let currentTaskItem = e.target;
         let currentTaskName = currentTaskItem.getAttribute("data-value");
         let currentTaskKey = currentTaskItem.getAttribute("data-key");
         let currentTaskNote = currentTaskItem.getAttribute("data-note");
+        let currentTaskDate = currentTaskItem.getAttribute("data-date");
+        let currentTaskTime = currentTaskItem.getAttribute("data-time");
 
         if (!currentTaskItem.classList.contains('task-item')) {
             return;
@@ -381,6 +393,8 @@ var Task = {
 
         $('#fullHeightModalRight').modal('show');
         taskName.value = currentTaskName;
+        taskDate.value = currentTaskDate;
+        taskTime.value = currentTaskTime;
         taskNote.innerHTML = currentTaskNote;
         taskName.setAttribute("data-key", currentTaskKey);
     },
@@ -396,9 +410,9 @@ var Task = {
 
 
         let modalTitle = document.querySelector("#ListModalTitle");
-        let listName = ListForm.querySelector("input.listName");
+        let listName = listForm.querySelector("input.listName");
 
-        ListForm.name = "createListForm";
+        listForm.name = "createListForm";
         modalTitle.innerHTML = "Create New List";
         listName.id = "createList";
         listName.setAttribute("value", "");
@@ -416,9 +430,9 @@ var Task = {
         $("#ListModal").modal("show");
 
         let modalTitle = document.querySelector("#ListModalTitle");
-        let listName = ListForm.querySelector("input.listName");
+        let listName = listForm.querySelector("input.listName");
 
-        ListForm.name = "editListForm";
+        listForm.name = "editListForm";
         modalTitle.innerHTML = "Edit List";
         listName.id = "editList";
         listName.setAttribute("value", currentListName);

@@ -45,7 +45,7 @@ label{
 }
 
 .main-block{
-    background-image: url("https://images6.alphacoders.com/925/925754.jpg");
+    background-image: url("https://www.gannett-cdn.com/-mm-/d323fe49c2a769ec011236979ae04578484592c5/c=0-427-4992-3247/local/-/media/2018/02/02/CNYGroup/Binghamton/636531792568173900-GettyImages-863607936.jpg?width=3200&height=1680&fit=crop");
     background-size: cover;
     padding-top: 25px;
     height: 913px;
@@ -143,3 +143,21 @@ a.list-group-item {
     flex-wrap: wrap;
 }
 
+.modal-right .buttons{
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+}
+
+.Settings-list{
+    width: 20%;
+}
+
+.Settings-list a {
+    display: block;
+}
+
+.Settings-tabs{
+    width: 80%;
+    margin-left: 20px;
+}
