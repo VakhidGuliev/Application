@@ -105,6 +105,7 @@ var listGroup = document.querySelector('.list-group');
 var tabContent = document.querySelector(".tab-content");
 var btnShowCreateList = document.querySelector("#showCreateList");
 var findTask = document.querySelector(".findTask");
+var settingList = document.querySelector(".Settings-list");
 
 const userId = [];
 
@@ -216,6 +217,8 @@ var Task = {
 
         $('#ListModal').modal('hide');
         listGroup.innerHTML = "";
+        tabContent.innerHTML = "";
+        document.querySelector(".categoriesName").innerHTML = "";
     },
 
     addTask: function (e) {
@@ -374,6 +377,22 @@ var Task = {
 
 
     },
+    showAccountTab: function (e){
+        let link = e.target;
+
+        if (!link.classList.contains('setting-list-item')) {
+            return;
+        }
+
+        let linkName = link.dataset.name;
+
+        document.querySelectorAll('.setting-tab-pane, .setting-list-item').forEach(el => {
+            el.classList.remove("active");
+        });
+        link.classList.add("active");
+        document.querySelector(`.setting-tab-pane[id=${linkName}]`).classList.add("active");
+
+    },
     showTaskModal: function (e) {
         let taskName = document.querySelector("#taskName");
         let taskNote = document.querySelector("#note");
@@ -449,6 +468,7 @@ var Task = {
 
 //listeners :
 listGroup.addEventListener("click", Task.showTab);
+settingList.addEventListener("click",Task.showAccountTab);
 
 //Modals
 btnShowCreateList.addEventListener("click", Task.showCreateListModal);
@@ -465,7 +485,6 @@ taskForm.addEventListener("submit", Task.addTask);
 editTaskForm.addEventListener("submit", Task.editTask);
 tabContent.addEventListener("click", Task.deleteTask);
 findTask.addEventListener("click", Task.findTask);
-
 
 
 

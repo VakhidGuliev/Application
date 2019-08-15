@@ -26,7 +26,7 @@ var FormAuth = {
 
 
     validate: function () {
-        var btnSignIn = formAuth.querySelector(".button[value=ВОЙТИ]");
+        var btnSignIn = formAuth.querySelector(".button[value=LogIn]");
 
 
         if (FormAuth.email.value === "" || this.password.value === "") {
@@ -61,10 +61,10 @@ var FormAuth = {
         auth.signInWithEmailAndPassword(FormAuth.email.value, FormAuth.password.value).then(function () {
             window.open(URL, "_self");
             FormAuth.message.classList.add("successMessage");
-            FormAuth.message.innerText = "Выполяется вход..."
+            FormAuth.message.innerText = "Login in progress..."
         }).catch(function () {
             FormAuth.message.classList.add("errorMessage");
-            FormAuth.message.innerText = "Неверный логин или пароль!"
+            FormAuth.message.innerText = "Invalid username or password!"
         });
     }
 };

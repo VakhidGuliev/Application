@@ -45,7 +45,7 @@ label{
 }
 
 .main-block{
-    background-image: url("https://www.gannett-cdn.com/-mm-/d323fe49c2a769ec011236979ae04578484592c5/c=0-427-4992-3247/local/-/media/2018/02/02/CNYGroup/Binghamton/636531792568173900-GettyImages-863607936.jpg?width=3200&height=1680&fit=crop");
+    background-image: url("https://arte1.ru/images/detailed/2/12413.jpg");
     background-size: cover;
     padding-top: 25px;
     height: 913px;
@@ -64,8 +64,8 @@ span.listName {
 
 .list-group-item.active{
     color: #fff !important;
-    background-color: #33b5e5 !important;
-    border-color: #33b5e5 !important;
+    background-color: #061421 !important;
+    border-color: #061421 !important;
 }
 
 .search-block{
@@ -82,7 +82,7 @@ label[for="search"]{
 }
 
 nav{
-    background: #78addd;
+    background: #061421;
 }
 img.avatar{
     height: 50px;
@@ -127,10 +127,6 @@ span.deleteTask {
     right: 10px;
 }
 
-span#search_btn {
-    background-color: #33b5e5;
-}
-
 
 i.fa.fa-trash {
     color: red;
@@ -160,4 +156,24 @@ a.list-group-item {
 .Settings-tabs{
     width: 80%;
     margin-left: 20px;
+}
+
+.setting-list-item{
+    position: relative;
+    display: block;
+    padding: .75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+}
+.setting-list-item.active{
+    color: #fff !important;
+    background-color: #33b5e5 !important;
+    border-color: #33b5e5 !important;
+}
+.setting-tab-pane{
+    display: none;
+}
+.setting-tab-pane.active{
+    display: block;
 }
