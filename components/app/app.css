@@ -5,6 +5,9 @@
     font-style: normal;
 }
 
+nav{
+    background: #061421;
+}
 
 input{
     width: 100%;
@@ -57,9 +60,34 @@ label{
 .menu-block{
     background-color: #e4e1be26;
 }
+
+.search-block{
+    position: relative;
+    margin-bottom: 12px;
+}
+
 span.listName {
-    width: 170px;
     pointer-events: none;
+    position:relative;
+    right:5px;
+}
+span.listCount{
+    align-self: center;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+span.task-name {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+span.deleteTask {
+    cursor: pointer;
+    align-self: center;
+    position: absolute;
+    display: block;
+    right: 10px;
 }
 
 .list-group-item.active{
@@ -68,10 +96,7 @@ span.listName {
     border-color: #061421 !important;
 }
 
-.search-block{
-    position: relative;
-    margin-bottom: 12px;
-}
+
 
 label[for="search"]{
     position: absolute;
@@ -81,9 +106,7 @@ label[for="search"]{
     margin-right: 5px;
 }
 
-nav{
-    background: #061421;
-}
+
 img.avatar{
     height: 50px;
 }
@@ -113,20 +136,6 @@ li.list-group-item.list-group-item-light {
 li.task-item{
     cursor: pointer;
 }
-
-span.task-name {
-    font-size: 20px;
-    cursor: pointer;
-}
-
-span.deleteTask {
-    cursor: pointer;
-    align-self: center;
-    position: absolute;
-    display: block;
-    right: 10px;
-}
-
 
 i.fa.fa-trash {
     color: red;
@@ -176,4 +185,14 @@ a.list-group-item {
 }
 .setting-tab-pane.active{
     display: block;
+}
+
+.md-form .prefix~label {
+    margin-left: 2.5rem;
+    margin-top: -20px;
+}
+
+
+.md-form label.active {
+    transform: translateY(0px) scale(.8) !important;
 }

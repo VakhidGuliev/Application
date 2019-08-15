@@ -27,8 +27,10 @@ auth.onAuthStateChanged(function (user) {
         userId.push(user.uid);
 
         userName.innerHTML = user.email;
-        let ref = database.ref(`Users/${user.uid}/Tasks`);
-        ref.on("value", getTask);
+        let refTasks = database.ref(`Users/${user.uid}/Tasks`);
+        let refUsers = database.ref(`Users/${user.uid}/userInfo`);
+        refTasks.on("value", getTask);
+        refUsers.on("value",getUserInfo);
 
         function getTask(data) {
             var Tab = Task.Tabs();
@@ -82,6 +84,15 @@ auth.onAuthStateChanged(function (user) {
                     }
                 }
             }).catch(e=> console.log(e.message));
+        }
+        function getUserInfo(data) {
+            let userInfo = data.val();
+            console.log(userInfo);
+            let accountForm = document.forms.namedItem("AccountSettings");
+            accountForm["user-name"].value = userInfo.username;
+            accountForm["user-email"].value = userInfo.email;
+            accountForm["user-phone"].value = userInfo.phone;
+            accountForm["user-password"].value = userInfo.password;
         }
     } else {
         // User is signed out.
@@ -338,8 +349,8 @@ var Task = {
             tabContainer: document.querySelector(".tab-content"),
             renderLists: function (list, index, array) {
                 return `<a class="list-group-item list-group-item-action" data-name="${list}" data-index="${index}" role="tab">
-                                <span class="listName"><i class="fa fa-list-ul" style="position:relative;right:5px;"></i>${list}</span>
-                                <span class="listCount badge badge-primary" title="Task count" style="align-self:center">${array}</span>
+                                <span class="listName"><i class="fa fa-list-ul"></i>${list}</span>
+                                <span class="listCount badge badge-primary" title="Task count">${array}</span>
                                 <span class="editList" title="List options"><i class="fa fa-edit"></i></span>
                             </a>`
             },
