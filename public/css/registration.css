@@ -637,3 +637,11 @@ input {
 .page-wrapper{
   background: url("https://www.stayatbluemountain.com/wp-content/uploads/2018/07/Things-to-do-at-blue-mountain-in-september-Stay-at-Blue-Mountain.jpg") !important;
 }
+
+input.error {
+  border: 1px solid #ff0000;
+}
+label.error {
+  color: #ff0000;
+  font-weight: normal;
+}
