@@ -1,0 +1,198 @@
+@font-face {
+    font-family: 'Web font';
+    src: url('../../fonts/fa-solid-900.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+nav{
+    background: #061421;
+}
+
+input{
+    width: 100%;
+}
+input[type=checkbox]{
+    cursor: pointer;
+}
+input.isMarked {
+    width: 30px;
+    height: 20px;
+    position: relative;
+    top: 5px;
+    left: -5px;
+}
+
+.user-menu{
+    text-align: left;
+    padding: 0 20px;
+    padding-top: 10px;
+    color: #fff;
+}
+button {
+    padding: .375rem .75rem !important;
+}
+
+ul{
+    padding: 0;
+}
+
+a{
+    cursor: pointer;
+}
+h1{
+    color: #fff;
+}
+label{
+    margin-bottom: 0;
+}
+
+.main-block{
+    background-image: url("https://arte1.ru/images/detailed/2/12413.jpg");
+    background-size: cover;
+    padding-top: 25px;
+    height: 913px;
+}
+.user-block{
+    padding: 10px;
+}
+
+.menu-block{
+    background-color: #e4e1be26;
+}
+
+.search-block{
+    position: relative;
+    margin-bottom: 12px;
+}
+
+span.listName {
+    pointer-events: none;
+    position:relative;
+    right:5px;
+}
+span.listCount{
+    align-self: center;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+span.task-name {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+span.deleteTask {
+    cursor: pointer;
+    align-self: center;
+    position: absolute;
+    display: block;
+    right: 10px;
+}
+
+.list-group-item.active{
+    color: #fff !important;
+    background-color: #061421 !important;
+    border-color: #061421 !important;
+}
+
+
+
+label[for="search"]{
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    margin-right: 5px;
+}
+
+
+img.avatar{
+    height: 50px;
+}
+
+.input-group-append{
+    cursor: pointer;
+}
+
+.tab-pane.hide{
+    display: none !important;
+}
+
+.tab-pane.show{
+    display: block !important;
+}
+
+.search-block .form-group {
+    display: flex;
+}
+form[name="search_form"]{
+    width: 100%;
+}
+
+li.list-group-item.list-group-item-light {
+    display: flex;
+}
+li.task-item{
+    cursor: pointer;
+}
+
+i.fa.fa-trash {
+    color: red;
+    font-size: 20px;
+}
+
+a.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.modal-right .buttons{
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+}
+
+.Settings-list{
+    width: 20%;
+}
+
+.Settings-list a {
+    display: block;
+}
+
+.Settings-tabs{
+    width: 80%;
+    margin-left: 20px;
+}
+
+.setting-list-item{
+    position: relative;
+    display: block;
+    padding: .75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+}
+.setting-list-item.active{
+    color: #fff !important;
+    background-color: #33b5e5 !important;
+    border-color: #33b5e5 !important;
+}
+.setting-tab-pane{
+    display: none;
+}
+.setting-tab-pane.active{
+    display: block;
+}
+
+.md-form .prefix~label {
+    margin-left: 2.5rem;
+    margin-top: -20px;
+}
+
+
+.md-form label.active {
+    transform: translateY(0px) scale(.8) !important;
+}
