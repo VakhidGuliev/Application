@@ -1,4 +1,5 @@
 import ModalService from "../services/modal-service";
+import FirebaseService from "../services/firebase-service";
 
 class CategoryController {
     constructor() {}
@@ -17,9 +18,9 @@ class CategoryController {
         btnCreate.addEventListener("click", (e) => {
             e.preventDefault();
 
-            const categoryName = $("input[name='Name']").val();
+            const categoryName = $("input[name='categoryName']").val();
 
-            // new ApiService().createCategory(categoryName);
+            new FirebaseService().createCategory(categoryName)
         });
     }
 

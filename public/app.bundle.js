@@ -18933,13 +18933,15 @@ module.exports = g;
 /*!********************!*\
   !*** ./src/app.js ***!
   \********************/
-/*! no exports provided */
+/*! exports provided: userId */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "userId", function() { return userId; });
 /* harmony import */ var _controllers_category_controller__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./controllers/category-controller */ "./src/controllers/category-controller.js");
 /* harmony import */ var _services_firebase_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/firebase-service */ "./src/services/firebase-service.js");
+
 
 
 
@@ -18947,6 +18949,11 @@ __webpack_require__.r(__webpack_exports__);
 const btnCreateList = document.querySelector("#showCreateList");
 const listGroup = document.querySelector('.list-group');
 const tabContent = document.querySelector(".tab-content");
+
+const userId = new _services_firebase_service__WEBPACK_IMPORTED_MODULE_1__["default"]().init();
+
+
+
 
 //controllers
 const categoryController = new _controllers_category_controller__WEBPACK_IMPORTED_MODULE_0__["default"]();
@@ -18974,6 +18981,8 @@ listGroup.addEventListener("click", categoryController.switchCategory);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_modal_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/modal-service */ "./src/services/modal-service.js");
+/* harmony import */ var _services_firebase_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/firebase-service */ "./src/services/firebase-service.js");
+
 
 
 class CategoryController {
@@ -18993,9 +19002,9 @@ class CategoryController {
         btnCreate.addEventListener("click", (e) => {
             e.preventDefault();
 
-            const categoryName = $("input[name='Name']").val();
+            const categoryName = $("input[name='categoryName']").val();
 
-            // new ApiService().createCategory(categoryName);
+            new _services_firebase_service__WEBPACK_IMPORTED_MODULE_1__["default"]().createCategory(categoryName)
         });
     }
 
@@ -19057,6 +19066,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(firebase_app__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var firebase_auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! firebase/auth */ "./node_modules/firebase/auth/dist/index.esm.js");
 /* harmony import */ var firebase_database__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! firebase/database */ "./node_modules/firebase/database/dist/index.esm.js");
+/* harmony import */ var _render_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./render-service */ "./src/services/render-service.js");
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../app */ "./src/app.js");
+
+
 
 
 
@@ -19066,6 +19079,35 @@ __webpack_require__.r(__webpack_exports__);
 class FirebaseService {
 
     constructor() {}
+
+    init(){
+        const firebaseConfig = {
+            apiKey: "AIzaSyAtV83XESmZQD4-YhatEp7MOFghOt6cnHE",
+            authDomain: "jstest-f8715.firebaseapp.com",
+            databaseURL: "https://jstest-f8715.firebaseio.com",
+            projectId: "jstest-f8715",
+            storageBucket: "jstest-f8715.appspot.com",
+            messagingSenderId: "1006017018685",
+            appId: "1:1006017018685:web:50e5961a85742c6db42354"
+        };
+        // Initialize Firebase
+        if (!firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.apps.length) {
+            firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.initializeApp(firebaseConfig)
+        }
+
+            const userId = [];
+            const auth = firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.auth();
+            auth.onAuthStateChanged(function (user) {
+                if (user) {
+                    // User is signed in.
+                    userId.push(user.uid);
+                } else {
+                    // User is signed out.
+                    window.open("../auth/auth.html", "_self");
+                }
+            });
+            return userId;
+    }
 
     registration(form) {
         const database = firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.database();
@@ -19100,8 +19142,18 @@ class FirebaseService {
         });
     }
 
-    createCategory(){}
+    createCategory(categoryName){
 
+        const database = firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.database();
+
+        let ref = database.ref(`Users/${_app__WEBPACK_IMPORTED_MODULE_4__["userId"][0]}/Tasks`);
+        ref.child(`${categoryName}`).set({
+            categoryName: categoryName,
+            id:0,
+        }).then(response => response);
+
+        new _render_service__WEBPACK_IMPORTED_MODULE_3__["default"]().renderCategory();
+    }
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (FirebaseService);
@@ -19221,6 +19273,71 @@ class ModalService {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (ModalService);
+
+/***/ }),
+
+/***/ "./src/services/render-service.js":
+/*!****************************************!*\
+  !*** ./src/services/render-service.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _modal_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modal-service */ "./src/services/modal-service.js");
+
+
+class RenderService {
+    constructor(){}
+
+    renderCategory(){
+        let category = {
+            categoryName: document.querySelector("#createList").value.toString().trim(),
+        };
+
+        const listForm = document.querySelector("#ListForm");
+        let categoryName = document.querySelector("#createList");
+        let tabNameLength = document.querySelector(`.tab-content .tab-pane[id="${category.categoryName}"]`);
+        let listLength = document.querySelectorAll("#myList a").length;
+
+
+        if (category.categoryName && isNaN(category.categoryName) && tabNameLength === null) {
+
+            let Tab = new _modal_service__WEBPACK_IMPORTED_MODULE_0__["default"]().Tabs();
+
+            // render
+            Tab.listContainer.insertAdjacentHTML("beforeend", Tab.renderLists(category.categoryName, listLength, 0));
+            Tab.tabContainer.insertAdjacentHTML("beforeend", Tab.renderTabs(category.categoryName, listLength));
+
+            //delete active class
+            Tab.listContainer.querySelectorAll("a").forEach(value => value.classList.remove("active"));
+            Tab.tabContainer.querySelectorAll(".tab-pane").forEach(value => value.classList.remove("active"));
+
+            //add active class created category
+            Tab.listContainer.querySelector(`a[data-name=${category.categoryName}]`).classList.add("active");
+            Tab.tabContainer.querySelector(`.tab-pane[data-name=${category.categoryName}]`).classList.add("active");
+
+            document.querySelector(".categoriesName").innerHTML = category.categoryName;
+
+            // valid categoryName
+            categoryName.classList.remove("is-invalid");
+            categoryName.classList.add("is-valid");
+
+            listForm.reset();
+
+            $(".valid-feedback").html("");
+            $(".invalid-feedback").html("");
+
+            $('#ListModal').modal('hide');
+        } else {
+            categoryName.classList.add("is-invalid");
+            return false;
+        }
+    }
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (RenderService);
 
 /***/ })
 

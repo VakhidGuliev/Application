@@ -12,8 +12,6 @@ class RenderService {
         let categoryName = document.querySelector("#createList");
         let tabNameLength = document.querySelector(`.tab-content .tab-pane[id="${category.categoryName}"]`);
         let listLength = document.querySelectorAll("#myList a").length;
-        const lastId = parseInt($(".list-group a:last-child").attr("data-id"));
-        const newId = (lastId + 1).toString();
 
 
         if (category.categoryName && isNaN(category.categoryName) && tabNameLength === null) {
@@ -21,8 +19,8 @@ class RenderService {
             let Tab = new ModalService().Tabs();
 
             // render
-            Tab.listContainer.insertAdjacentHTML("beforeend", Tab.renderLists(category.categoryName, newId, 0));
-            Tab.tabContainer.insertAdjacentHTML("beforeend", Tab.renderTabs(category.categoryName, newId));
+            Tab.listContainer.insertAdjacentHTML("beforeend", Tab.renderLists(category.categoryName, listLength, 0));
+            Tab.tabContainer.insertAdjacentHTML("beforeend", Tab.renderTabs(category.categoryName, listLength));
 
             //delete active class
             Tab.listContainer.querySelectorAll("a").forEach(value => value.classList.remove("active"));
