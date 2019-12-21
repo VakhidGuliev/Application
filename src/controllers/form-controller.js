@@ -22,7 +22,9 @@ class FormController {
             appId: "1:1006017018685:web:50e5961a85742c6db42354"
         };
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig)
+        }
     }
 
     submit() {
