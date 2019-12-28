@@ -119,7 +119,7 @@ CONTENT
 
 /* Input field */
 .login-form .content .input {
-	width: 188px;
+	width: auto;
 	padding: 15px 25px;
 	
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;

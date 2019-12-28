@@ -18933,15 +18933,12 @@ module.exports = g;
 /*!********************!*\
   !*** ./src/app.js ***!
   \********************/
-/*! exports provided: userId */
+/*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "userId", function() { return userId; });
 /* harmony import */ var _controllers_category_controller__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./controllers/category-controller */ "./src/controllers/category-controller.js");
-/* harmony import */ var _services_firebase_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/firebase-service */ "./src/services/firebase-service.js");
-
 
 
 
@@ -18950,23 +18947,14 @@ const btnCreateList = document.querySelector("#showCreateList");
 const listGroup = document.querySelector('.list-group');
 const tabContent = document.querySelector(".tab-content");
 
-const userId = new _services_firebase_service__WEBPACK_IMPORTED_MODULE_1__["default"]().init();
-
-
-
-
 //controllers
 const categoryController = new _controllers_category_controller__WEBPACK_IMPORTED_MODULE_0__["default"]();
-
-$(function () {
-    // new FirebaseService().getTasks();
-});
 
 
 //listeners
 //1) categories
 btnCreateList.addEventListener("click", categoryController.CreateCategory);
-listGroup.addEventListener("click", categoryController.EditCategory);
+// listGroup.addEventListener("click", categoryController.EditCategory);
 listGroup.addEventListener("click", categoryController.switchCategory);
 
 /***/ }),
@@ -19028,7 +19016,7 @@ class CategoryController {
 
             const id = $(".list-group-item-action.active").attr("data-id");
 
-            new ApiService().deleteCategory(id);
+            new _services_firebase_service__WEBPACK_IMPORTED_MODULE_1__["default"]().deleteCategory(id);
         });
         btnEditSave.addEventListener("click", (e) => {
 
@@ -19038,7 +19026,7 @@ class CategoryController {
             const categoryName = $("input[name='Name']").val();
             const id = $(".list-group-item-action.active").attr("data-id");
 
-            // new ApiService().editCategory(id,categoryName);
+            new _services_firebase_service__WEBPACK_IMPORTED_MODULE_1__["default"]().editCategory(id,categoryName);
         });
 
     }
@@ -19067,7 +19055,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var firebase_auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! firebase/auth */ "./node_modules/firebase/auth/dist/index.esm.js");
 /* harmony import */ var firebase_database__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! firebase/database */ "./node_modules/firebase/database/dist/index.esm.js");
 /* harmony import */ var _render_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./render-service */ "./src/services/render-service.js");
-/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../app */ "./src/app.js");
+/* harmony import */ var _modal_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modal-service */ "./src/services/modal-service.js");
+/* harmony import */ var _transform_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./transform-service */ "./src/services/transform-service.js");
 
 
 
@@ -19075,6 +19064,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const userId = [];
 
 class FirebaseService {
 
@@ -19095,12 +19085,12 @@ class FirebaseService {
             firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.initializeApp(firebaseConfig)
         }
 
-            const userId = [];
             const auth = firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.auth();
             auth.onAuthStateChanged(function (user) {
                 if (user) {
                     // User is signed in.
                     userId.push(user.uid);
+                    console.log(userId);
                 } else {
                     // User is signed out.
                     window.open("../auth/auth.html", "_self");
@@ -19127,18 +19117,73 @@ class FirebaseService {
             }).then(() => window.open("../public/auth.html", "_self"))
         }).catch((e)=> console.log(e.message));
     }
-
     login(form){
 
         const auth = firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.auth();
 
         auth.signInWithEmailAndPassword(form.email.value, form.password.value).then(function () {
             window.open("../public/app.html", "_self");
-            form.message.classList.add("successMessage");
-            form.message.innerText = "Login in progress..."
         }).catch(function () {
-            form.message.classList.add("errorMessage");
-            form.message.innerText = "Invalid username or password!"
+        });
+    }
+
+    getData(){
+
+        const auth = firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.auth();
+        const database = firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.database();
+
+        auth.onAuthStateChanged(function (user) {
+            if (user) {
+                // User is signed in.
+
+                let refTasks = database.ref(`Users/${user.uid}/Tasks`);
+                let refUsers = database.ref(`Users/${user.uid}/userInfo`);
+                refTasks.on("value", getCategories);
+                refUsers.on("value",getUserInfo);
+
+
+                function getCategories(data) {
+                    const TaskObject = data.val();
+                    const Tab = new _modal_service__WEBPACK_IMPORTED_MODULE_4__["default"]().Tabs();
+                    const promise = Object(_transform_service__WEBPACK_IMPORTED_MODULE_5__["fbTransformToArray"])(TaskObject);
+
+                    promise.then(function (arr) {
+                        let objectKeys = Object.keys(TaskObject);
+
+                        //Update database
+                        document.querySelector("#myList").innerHTML = "";
+                        document.querySelector(".tab-content").innerHTML = "";
+
+                        objectKeys.forEach((value, index, array) => {
+                            array = arr;
+
+                            Tab.listContainer.insertAdjacentHTML("beforeend", Tab.renderLists(value, index, array[index].tasksCount));
+                            Tab.tabContainer.insertAdjacentHTML("beforeend", Tab.renderTabs(value, index));
+
+                            Tab.listContainer.querySelectorAll("a").forEach(value => value.classList.remove("active"));
+                            Tab.tabContainer.querySelectorAll(".tab-pane").forEach(value => value.classList.remove("active"));
+
+                            document.querySelector("#myList a:first-child").classList.add("active");
+                            document.querySelector(".tab-content .tab-pane:first-child").classList.add("active");
+
+                            document.querySelector(".categoriesName").innerHTML = array[0].categoryName;
+                        });
+                    })
+                }
+                function getTasks(data) {}
+                function getUserInfo(data) {
+                    let userInfo = data.val();
+                    console.log(userInfo);
+                    let accountForm = document.forms.namedItem("AccountSettings");
+                    accountForm["user-name"].value = userInfo.username;
+                    accountForm["user-email"].value = userInfo.email;
+                    accountForm["user-phone"].value = userInfo.phone;
+                    accountForm["user-password"].value = userInfo.password;
+                }
+            } else {
+                // User is signed out.
+                window.open("../auth/auth.html", "_self");
+            }
         });
     }
 
@@ -19146,7 +19191,7 @@ class FirebaseService {
 
         const database = firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.database();
 
-        let ref = database.ref(`Users/${_app__WEBPACK_IMPORTED_MODULE_4__["userId"][0]}/Tasks`);
+        let ref = database.ref(`Users/${userId[0]}/Tasks`);
         ref.child(`${categoryName}`).set({
             categoryName: categoryName,
             id:0,
@@ -19154,7 +19199,16 @@ class FirebaseService {
 
         new _render_service__WEBPACK_IMPORTED_MODULE_3__["default"]().renderCategory();
     }
+    editCategory(){}
+    deleteCategory(){}
+
+    createTask(){}
+    editTask(){}
+    deleteTask(){}
 }
+
+new FirebaseService().init();
+new FirebaseService().getData();
 
 /* harmony default export */ __webpack_exports__["default"] = (FirebaseService);
 
@@ -19338,6 +19392,29 @@ class RenderService {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (RenderService);
+
+/***/ }),
+
+/***/ "./src/services/transform-service.js":
+/*!*******************************************!*\
+  !*** ./src/services/transform-service.js ***!
+  \*******************************************/
+/*! exports provided: fbTransformToArray */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fbTransformToArray", function() { return fbTransformToArray; });
+// transform firebase data to object=>
+async function fbTransformToArray(fbData) {
+    return Object.keys(fbData).map(function (value) {
+        const item = fbData[value];
+
+        item.tasksCount = Object.keys(item).length-2;
+        return item;
+    })
+}
+
 
 /***/ })
 

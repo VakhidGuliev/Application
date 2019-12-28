@@ -44,7 +44,7 @@ class CategoryController {
 
             const id = $(".list-group-item-action.active").attr("data-id");
 
-            new ApiService().deleteCategory(id);
+            new FirebaseService().deleteCategory(id);
         });
         btnEditSave.addEventListener("click", (e) => {
 
@@ -54,7 +54,7 @@ class CategoryController {
             const categoryName = $("input[name='Name']").val();
             const id = $(".list-group-item-action.active").attr("data-id");
 
-            // new ApiService().editCategory(id,categoryName);
+            new FirebaseService().editCategory(id,categoryName);
         });
 
     }
