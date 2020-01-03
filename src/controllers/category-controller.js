@@ -1,5 +1,6 @@
 import ModalService from "../services/modal-service";
 import FirebaseService from "../services/firebase-service";
+import ApiService from "../services/api-service";
 
 class CategoryController {
     constructor() {}
@@ -20,7 +21,7 @@ class CategoryController {
 
             const categoryName = $("input[name='categoryName']").val();
 
-            new FirebaseService().createCategory(categoryName)
+            new ApiService().createCategory(categoryName)
         });
     }
 
@@ -44,7 +45,7 @@ class CategoryController {
 
             const id = $(".list-group-item-action.active").attr("data-id");
 
-            new FirebaseService().deleteCategory(id);
+            new ApiService().deleteCategory(id);
         });
         btnEditSave.addEventListener("click", (e) => {
 
@@ -54,7 +55,7 @@ class CategoryController {
             const categoryName = $("input[name='Name']").val();
             const id = $(".list-group-item-action.active").attr("data-id");
 
-            new FirebaseService().editCategory(id,categoryName);
+            new ApiService().editCategory(id,categoryName);
         });
 
     }

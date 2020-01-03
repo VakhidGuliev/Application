@@ -1,4 +1,5 @@
 import CategoryController from "./controllers/category-controller"
+import ApiService from "./services/api-service";
 
 
 //variables
@@ -9,6 +10,12 @@ const tabContent = document.querySelector(".tab-content");
 //controllers
 const categoryController = new CategoryController();
 
+
+//load Data
+
+$(function () {
+   new ApiService().getData();
+});
 
 //listeners
 //1) categories
