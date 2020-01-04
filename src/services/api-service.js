@@ -1,7 +1,10 @@
-import firebase from "firebase";
+import firebase from 'firebase/app';
 import ModalService from "./modal-service";
 import {fbTransformToArray} from "./transform-service";
 import RenderService from "./render-service";
+
+
+const userId = [];
 
 class ApiService {
     constructor(){}
@@ -13,12 +16,14 @@ class ApiService {
 
         auth.onAuthStateChanged(function (user) {
             if (user) {
+
                 // User is signed in.
 
                 let refTasks = database.ref(`Users/${user.uid}/Tasks`);
                 let refUsers = database.ref(`Users/${user.uid}/userInfo`);
                 refTasks.on("value", getCategories);
                 refUsers.on("value",getUserInfo);
+                refUsers.on("value",getUserId);
 
 
                 function getCategories(data) {
@@ -52,16 +57,17 @@ class ApiService {
                 function getTasks(data) {}
                 function getUserInfo(data) {
                     let userInfo = data.val();
-                    console.log(userInfo);
+
                     let accountForm = document.forms.namedItem("AccountSettings");
                     accountForm["user-name"].value = userInfo.username;
                     accountForm["user-email"].value = userInfo.email;
                     accountForm["user-phone"].value = userInfo.phone;
                     accountForm["user-password"].value = userInfo.password;
                 }
-            } else {
-                // User is signed out.
-                window.open("../public/app.html", "_self");
+                function getUserId(data) {
+                    const userInfo = data.val();
+                    userId.push(userInfo.id);
+                }
             }
         });
     }

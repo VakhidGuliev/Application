@@ -3,11 +3,12 @@ import 'firebase/auth';
 import 'firebase/database';
 
 
-const userId = [];
 
 class FirebaseService {
 
-    constructor() {}
+    constructor() {
+        this.init();
+    }
 
     init(){
         const firebaseConfig = {
@@ -23,19 +24,6 @@ class FirebaseService {
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig)
         }
-
-            const auth = firebase.auth();
-            auth.onAuthStateChanged(function (user) {
-                if (user) {
-                    // User is signed in.
-                    userId.push(user.uid);
-                    console.log(userId);
-                } else {
-                    // User is signed out.
-                    window.open("../auth/auth.html", "_self");
-                }
-            });
-            return userId;
     }
 
     registration(form) {
@@ -66,7 +54,5 @@ class FirebaseService {
         });
     }
 }
-
-new FirebaseService().init();
 
 export  default FirebaseService;

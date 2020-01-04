@@ -18940,9 +18940,6 @@ module.exports = g;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_validate_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/validate-service */ "./src/services/validate-service.js");
 /* harmony import */ var _services_firebase_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/firebase-service */ "./src/services/firebase-service.js");
-/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! firebase/app */ "./node_modules/firebase/app/dist/index.cjs.js");
-/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(firebase_app__WEBPACK_IMPORTED_MODULE_2__);
-
 
 
 
@@ -18951,24 +18948,6 @@ class FormController {
 
     constructor(form) {
         this.form = form;
-
-        this.init();
-    }
-
-    init(){
-        const firebaseConfig = {
-            apiKey: "AIzaSyAtV83XESmZQD4-YhatEp7MOFghOt6cnHE",
-            authDomain: "jstest-f8715.firebaseapp.com",
-            databaseURL: "https://jstest-f8715.firebaseio.com",
-            projectId: "jstest-f8715",
-            storageBucket: "jstest-f8715.appspot.com",
-            messagingSenderId: "1006017018685",
-            appId: "1:1006017018685:web:50e5961a85742c6db42354"
-        };
-        // Initialize Firebase
-        if (!firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.apps.length) {
-            firebase_app__WEBPACK_IMPORTED_MODULE_2___default.a.initializeApp(firebaseConfig)
-        }
     }
 
     submit() {
@@ -19046,11 +19025,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const userId = [];
 
 class FirebaseService {
 
-    constructor() {}
+    constructor() {
+        this.init();
+    }
 
     init(){
         const firebaseConfig = {
@@ -19066,19 +19046,6 @@ class FirebaseService {
         if (!firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.apps.length) {
             firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.initializeApp(firebaseConfig)
         }
-
-            const auth = firebase_app__WEBPACK_IMPORTED_MODULE_0___default.a.auth();
-            auth.onAuthStateChanged(function (user) {
-                if (user) {
-                    // User is signed in.
-                    userId.push(user.uid);
-                    console.log(userId);
-                } else {
-                    // User is signed out.
-                    window.open("../auth/auth.html", "_self");
-                }
-            });
-            return userId;
     }
 
     registration(form) {
@@ -19109,8 +19076,6 @@ class FirebaseService {
         });
     }
 }
-
-new FirebaseService().init();
 
 /* harmony default export */ __webpack_exports__["default"] = (FirebaseService);
 
