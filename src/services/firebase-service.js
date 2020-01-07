@@ -3,7 +3,6 @@ import 'firebase/auth';
 import 'firebase/database';
 
 
-
 class FirebaseService {
 
     constructor() {
@@ -41,7 +40,7 @@ class FirebaseService {
                 password: form.password.value,
                 phone: form.phone.value,
                 id: userId
-            }).then(() => window.open("../public/auth.html", "_self"))
+            }).then(() => window.open("../auth.html", "_self"))
         }).catch((e)=> console.log(e.message));
     }
     login(form){
@@ -49,7 +48,7 @@ class FirebaseService {
         const auth = firebase.auth();
 
         auth.signInWithEmailAndPassword(form.email.value, form.password.value).then(function () {
-            window.open("../public/app.html", "_self");
+            window.open("../app.html", "_self");
         }).catch(function () {
         });
     }

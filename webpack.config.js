@@ -1,4 +1,6 @@
 const path = require(`path`);
+const webpack = require("webpack");
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode: 'development',
@@ -35,9 +37,23 @@ module.exports = {
     },
     devtool: `source-map`,
     devServer: {
+        historyApiFallback: {
+            index: 'auth.html'
+        },
         contentBase: path.join(__dirname, `public`),
         compress: true,
         port: 8080,
-        watchContentBase: true
-    }
+        watchContentBase: true,
+    },
+    plugins: [
+        new webpack.ProvidePlugin({
+            '$': 'jquery',
+            'jQuery': 'jquery',
+            'windows.jQuery': 'jquery',
+        }),
+        // new HtmlWebpackPlugin({
+        //     title: 'auth',
+        //     template: 'public/auth.html'
+        // })
+    ]
 };

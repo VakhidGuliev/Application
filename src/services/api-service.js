@@ -18,7 +18,6 @@ class ApiService {
             if (user) {
 
                 // User is signed in.
-
                 let refTasks = database.ref(`Users/${user.uid}/Tasks`);
                 let refUsers = database.ref(`Users/${user.uid}/userInfo`);
                 refTasks.on("value", getCategories);
